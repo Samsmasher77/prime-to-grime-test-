@@ -1,0 +1,300 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a1a; }
+  .doc { background: #111111; color: #F0EAD6; font-family: 'Open Sans', sans-serif; max-width: 900px; margin: 0 auto; padding: 0; }
+  .cover { background: #1C1C1C; border-bottom: 4px solid #B22222; padding: 48px 40px 40px; display: flex; align-items: center; gap: 32px; }
+  .cover-badge { width: 100px; height: 100px; border-radius: 50%; background: #B22222; border: 4px solid #2a2a2a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cover-badge svg { width: 56px; height: 56px; }
+  .cover-text h1 { font-family: 'Oswald', sans-serif; font-size: 36px; font-weight: 700; color: #F0EAD6; letter-spacing: 2px; text-transform: uppercase; }
+  .cover-text p { font-size: 13px; color: #888; letter-spacing: 3px; text-transform: uppercase; margin-top: 6px; }
+  .section { padding: 40px; border-bottom: 1px solid #2a2a2a; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: #B22222; margin-bottom: 20px; }
+  .section-title { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 600; color: #F0EAD6; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .color-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .swatch { border-radius: 8px; overflow: hidden; flex: 1; min-width: 120px; }
+  .swatch-color { height: 80px; }
+  .swatch-info { padding: 10px 12px; background: #1C1C1C; border: 1px solid #2a2a2a; border-top: none; border-radius: 0 0 8px 8px; }
+  .swatch-name { font-size: 12px; font-weight: 600; color: #F0EAD6; }
+  .swatch-hex { font-size: 11px; color: #888; margin-top: 2px; font-family: monospace; }
+  .swatch-use { font-size: 10px; color: #666; margin-top: 4px; }
+
+  .type-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid #222; }
+  .type-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .type-meta { display: flex; gap: 16px; margin-top: 8px; }
+  .type-tag { font-size: 11px; background: #222; color: #888; padding: 3px 8px; border-radius: 4px; font-family: monospace; }
+
+  .heading-display { font-family: 'Oswald', sans-serif; font-weight: 700; color: #F0EAD6; text-transform: uppercase; letter-spacing: 2px; }
+  .subheading-display { font-family: 'Oswald', sans-serif; font-weight: 600; color: #F0EAD6; }
+  .body-display { font-family: 'Open Sans', sans-serif; font-size: 15px; color: #C8C0AD; line-height: 1.7; }
+  .cta-display { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; background: #B22222; color: #F0EAD6; display: inline-block; padding: 12px 28px; border-radius: 4px; }
+
+  .btn-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn-primary { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; background: #B22222; color: #F0EAD6; padding: 13px 28px; border-radius: 4px; border: 2px solid #B22222; cursor: pointer; }
+  .btn-secondary { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; background: transparent; color: #F0EAD6; padding: 13px 28px; border-radius: 4px; border: 2px solid #F0EAD6; cursor: pointer; }
+  .btn-ghost { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; background: transparent; color: #E8872A; padding: 13px 28px; border-radius: 4px; border: 2px solid #E8872A; cursor: pointer; }
+
+  .spacing-row { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+  .space-block { background: #B22222; border-radius: 3px; width: 40px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 6px; }
+  .space-label { font-size: 10px; color: #F0EAD6; font-family: monospace; }
+  .space-val { font-size: 10px; color: #F0EAD6; opacity: 0.7; }
+
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .do-card { background: #1a2a1a; border: 1px solid #2a4a2a; border-radius: 8px; padding: 16px; }
+  .dont-card { background: #2a1a1a; border: 1px solid #4a2a2a; border-radius: 8px; padding: 16px; }
+  .do-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #5a9a5a; margin-bottom: 10px; }
+  .dont-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #9a5a5a; margin-bottom: 10px; }
+  .rule-text { font-size: 13px; color: #aaa; line-height: 1.6; }
+
+  .voice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .voice-card { background: #1C1C1C; border: 1px solid #2a2a2a; border-radius: 8px; padding: 16px; }
+  .voice-word { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 600; color: #F0EAD6; margin-bottom: 6px; }
+  .voice-desc { font-size: 12px; color: #888; line-height: 1.5; }
+
+  .mockup-nav { background: #1C1C1C; border-bottom: 3px solid #B22222; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; border-radius: 8px 8px 0 0; }
+  .mockup-nav-logo { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 700; color: #F0EAD6; letter-spacing: 2px; text-transform: uppercase; }
+  .mockup-nav-links { display: flex; gap: 20px; }
+  .mockup-nav-link { font-family: 'Oswald', sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #C8C0AD; }
+  .mockup-hero { background: #161616; padding: 40px 24px; text-align: center; }
+  .mockup-hero h2 { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; color: #F0EAD6; text-transform: uppercase; letter-spacing: 2px; line-height: 1.2; }
+  .mockup-hero p { font-size: 14px; color: #C8C0AD; margin: 12px 0 20px; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .mockup-cta { font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; background: #B22222; color: #F0EAD6; padding: 11px 24px; border-radius: 4px; display: inline-block; }
+  .mockup-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 16px 24px; background: #111; border-radius: 0 0 8px 8px; }
+  .mockup-card { background: #1C1C1C; border: 1px solid #2a2a2a; border-radius: 6px; padding: 14px; text-align: center; }
+  .mockup-card-icon { font-size: 20px; margin-bottom: 8px; }
+  .mockup-card-title { font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; color: #F0EAD6; text-transform: uppercase; letter-spacing: 1px; }
+  .mockup-card-text { font-size: 11px; color: #888; margin-top: 4px; line-height: 1.4; }
+  .flame { color: #E8872A; }
+  .spark { color: #F0EAD6; }
+</style>
+
+<div class="doc">
+
+  <div class="cover">
+    <div class="cover-badge">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="28" cy="38" rx="14" ry="7" fill="#444"/>
+        <rect x="20" y="33" width="16" height="10" rx="2" fill="#555"/>
+        <line x1="22" y1="43" x2="22" y2="50" stroke="#555" stroke-width="3"/>
+        <line x1="34" y1="43" x2="34" y2="50" stroke="#555" stroke-width="3"/>
+        <path d="M28 30 C22 22 20 14 28 8 C26 16 32 18 30 10 C36 16 34 26 28 30Z" fill="#E8872A"/>
+        <path d="M28 30 C25 24 24 18 28 14 C27 20 30 21 28 17 C31 21 30 27 28 30Z" fill="#B22222"/>
+        <path d="M38 26 L40 22 L42 26 L40 28Z" fill="#F0EAD6"/>
+        <path d="M42 20 L44 17 L46 20 L44 22Z" fill="#F0EAD6"/>
+      </svg>
+    </div>
+    <div class="cover-text">
+      <h1>Grime to Prime BBQ Cleaning Co.</h1>
+      <p>Brand guidelines — website edition</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">01 — Color system</div>
+    <div class="section-title">Brand palette</div>
+    <div class="color-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#B22222;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">BBQ Red</div>
+          <div class="swatch-hex">#B22222</div>
+          <div class="swatch-use">Primary — CTAs, accents, nav bar</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E8872A;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Flame Orange</div>
+          <div class="swatch-hex">#E8872A</div>
+          <div class="swatch-use">Secondary — highlights, icons, hover</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#111111;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Charcoal Black</div>
+          <div class="swatch-hex">#111111</div>
+          <div class="swatch-use">Background — page, hero sections</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1C1C1C; border:1px solid #2a2a2a;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Grill Dark</div>
+          <div class="swatch-hex">#1C1C1C</div>
+          <div class="swatch-use">Cards, nav, section backgrounds</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F0EAD6;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Cream White</div>
+          <div class="swatch-hex">#F0EAD6</div>
+          <div class="swatch-use">All body text, headings on dark</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">02 — Typography</div>
+    <div class="section-title">Type system</div>
+
+    <div class="type-block">
+      <div class="heading-display" style="font-size:40px;">Your grill, spotless.</div>
+      <div class="type-meta">
+        <span class="type-tag">Oswald Bold 700</span>
+        <span class="type-tag">Uppercase</span>
+        <span class="type-tag">Letter-spacing: 2px</span>
+        <span class="type-tag">H1 — Hero headlines</span>
+      </div>
+    </div>
+
+    <div class="type-block">
+      <div class="subheading-display" style="font-size:26px;">Professional BBQ cleaning services</div>
+      <div class="type-meta">
+        <span class="type-tag">Oswald SemiBold 600</span>
+        <span class="type-tag">H2 — Section titles</span>
+        <span class="type-tag">24–30px</span>
+      </div>
+    </div>
+
+    <div class="type-block">
+      <div class="subheading-display" style="font-size:18px; color:#E8872A;">Why choose Grime to Prime?</div>
+      <div class="type-meta">
+        <span class="type-tag">Oswald 600</span>
+        <span class="type-tag">Flame Orange</span>
+        <span class="type-tag">H3 — Card headings, labels</span>
+      </div>
+    </div>
+
+    <div class="type-block">
+      <div class="body-display">We deep-clean your BBQ grill from top to bottom — removing grease, carbon buildup, and bacteria so your next cook is safe, clean, and delicious. Serving homeowners and restaurants across the area.</div>
+      <div class="type-meta">
+        <span class="type-tag">Open Sans 400</span>
+        <span class="type-tag">15–16px</span>
+        <span class="type-tag">Line-height: 1.7</span>
+        <span class="type-tag">Color: #C8C0AD</span>
+      </div>
+    </div>
+
+    <div class="type-block">
+      <div class="cta-display">Book a clean</div>
+      <div class="type-meta">
+        <span class="type-tag">Oswald 600</span>
+        <span class="type-tag">Uppercase</span>
+        <span class="type-tag">Letter-spacing: 2px</span>
+        <span class="type-tag">Buttons &amp; CTAs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">03 — Buttons &amp; UI elements</div>
+    <div class="section-title">Interactive components</div>
+    <div class="btn-row">
+      <button class="btn-primary">Book a clean</button>
+      <button class="btn-secondary">Learn more</button>
+      <button class="btn-ghost">Get a quote</button>
+    </div>
+    <div style="margin-top:16px; display:flex; gap:24px; flex-wrap:wrap;">
+      <div style="font-size:12px; color:#888;">Primary — main CTA, booking</div>
+      <div style="font-size:12px; color:#888;">Secondary — navigation, info actions</div>
+      <div style="font-size:12px; color:#888;">Accent — quotes, secondary CTAs</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">04 — Brand voice</div>
+    <div class="section-title">How we sound</div>
+    <div class="voice-grid">
+      <div class="voice-card">
+        <div class="voice-word">Confident</div>
+        <div class="voice-desc">"We get it spotless — guaranteed." No hedging, no maybes.</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-word">Straight-talking</div>
+        <div class="voice-desc">Plain language. No jargon. Customers know exactly what they're getting.</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-word">Tough & reliable</div>
+        <div class="voice-desc">The brand feels like a pro who shows up, does the job right, and leaves.</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-word">A little bold</div>
+        <div class="voice-desc">Playful headlines are OK. "From grime to prime" energy — punchy and memorable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">05 — Website mockup preview</div>
+    <div class="section-title">How it comes together</div>
+    <div>
+      <div class="mockup-nav">
+        <div class="mockup-nav-logo">Grime to Prime</div>
+        <div class="mockup-nav-links">
+          <span class="mockup-nav-link">Services</span>
+          <span class="mockup-nav-link">About</span>
+          <span class="mockup-nav-link" style="color:#E8872A;">Book now</span>
+        </div>
+      </div>
+      <div class="mockup-hero">
+        <h2>From grime<br><span style="color:#B22222;">to prime.</span></h2>
+        <p>Professional BBQ cleaning for homes and restaurants. Your grill, deep cleaned and ready to cook.</p>
+        <span class="mockup-cta">Book a clean</span>
+      </div>
+      <div class="mockup-cards">
+        <div class="mockup-card">
+          <div class="mockup-card-icon flame">&#9650;</div>
+          <div class="mockup-card-title">Deep clean</div>
+          <div class="mockup-card-text">Full disassembly & degreasing</div>
+        </div>
+        <div class="mockup-card">
+          <div class="mockup-card-icon spark">&#10022;</div>
+          <div class="mockup-card-title">Sanitized</div>
+          <div class="mockup-card-text">Food-safe clean every time</div>
+        </div>
+        <div class="mockup-card">
+          <div class="mockup-card-icon flame">&#9670;</div>
+          <div class="mockup-card-title">Any grill</div>
+          <div class="mockup-card-text">Gas, charcoal, smoker & more</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">06 — Do's &amp; don'ts</div>
+    <div class="section-title">Usage rules</div>
+    <div class="do-dont">
+      <div class="do-card">
+        <div class="do-label">Do</div>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li class="rule-text">&#10003; Use dark backgrounds — the brand lives in charcoal and black</li>
+          <li class="rule-text">&#10003; Use Oswald for all headlines and buttons</li>
+          <li class="rule-text">&#10003; BBQ Red for your main call-to-action only</li>
+          <li class="rule-text">&#10003; Keep copy short, punchy, and confident</li>
+          <li class="rule-text">&#10003; Use Flame Orange to draw the eye to secondary elements</li>
+        </ul>
+      </div>
+      <div class="dont-card">
+        <div class="dont-label">Don't</div>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li class="rule-text">&#10007; Use a white or light background — kills the brand feel</li>
+          <li class="rule-text">&#10007; Use more than 2 colors in a single button or element</li>
+          <li class="rule-text">&#10007; Use thin or light-weight fonts — brand is bold</li>
+          <li class="rule-text">&#10007; Use clip-art style BBQ imagery — keep photos dark &amp; dramatic</li>
+          <li class="rule-text">&#10007; Crowd the page — whitespace (dark space) is your friend</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 24px 40px; text-align:center; border-top: 1px solid #2a2a2a;">
+    <div style="font-size:11px; color:#555; letter-spacing:2px; text-transform:uppercase;">Grime to Prime BBQ Cleaning Co. — Brand Guidelines</div>
+  </div>
+
+</div>

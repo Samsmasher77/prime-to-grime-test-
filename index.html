@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grime to Prime BBQ Cleaning Co. — North County San Diego</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --red: #B22222;
+      --red-dark: #8B1A1A;
+      --flame: #E8872A;
+      --charcoal: #111111;
+      --grill: #1C1C1C;
+      --cream: #F0EAD6;
+      --muted: #C8C0AD;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--charcoal);
+      color: var(--cream);
+      font-family: 'Open Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    /* ── ANNOUNCEMENT BAR ─────────────────────────────── */
+    .topbar {
+      background: var(--red);
+      text-align: center;
+      padding: 8px 16px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+
+    /* ── NAV ──────────────────────────────────────────── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--grill);
+      border-bottom: 3px solid var(--red);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+    .nav-logo img {
+      height: 54px;
+      object-fit: contain;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-links a {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--flame); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-phone {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .nav-phone:hover { color: var(--flame); }
+
+    /* ── BUTTONS ──────────────────────────────────────── */
+    .btn-red {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--red);
+      color: var(--cream);
+      padding: 12px 26px;
+      border: 2px solid var(--red);
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .btn-red:hover {
+      background: var(--red-dark);
+      border-color: var(--red-dark);
+      transform: translateY(-2px);
+    }
+    .btn-red:active { transform: translateY(0); }
+
+    .btn-flame {
+      font-family: 'Oswald', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--flame);
+      color: #111;
+      padding: 14px 36px;
+      border: 2px solid var(--flame);
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-flame:hover {
+      background: #d07824;
+      border-color: #d07824;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--cream);
+      padding: 12px 26px;
+      border: 2px solid var(--cream);
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover {
+      background: var(--cream);
+      color: var(--charcoal);
+      transform: translateY(-2px);
+    }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 620px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('brand_assests/IMG_1059.JPG');
+      background-size: cover;
+      background-position: center 30%;
+      opacity: 0.45;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg,
+        rgba(140, 20, 20, 0.35) 0%,
+        rgba(8, 8, 8, 0.85) 55%,
+        rgba(5, 5, 5, 0.95) 100%
+      );
+    }
+    .hero-glow {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse at 50% 100%, rgba(232, 135, 42, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 40px;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--flame);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 2px;
+      background: var(--flame);
+    }
+    .hero h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(42px, 6.5vw, 82px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      line-height: 1.0;
+      color: var(--cream);
+      margin: 0 0 12px;
+    }
+    .hero h1 .accent { color: var(--red); }
+    .hero-location {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(24px, 3.5vw, 44px);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--flame);
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.75;
+      margin: 0 0 32px;
+    }
+    .hero-stars {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .stars { color: var(--flame); font-size: 22px; letter-spacing: 2px; }
+    .hero-stars span {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+    .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    /* ── TRUST TICKER ─────────────────────────────────── */
+    .trust-bar {
+      background: var(--red);
+      overflow: hidden;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    /* fade edges */
+    .trust-bar::before,
+    .trust-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 80px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .trust-bar::before { left: 0; background: linear-gradient(to right, var(--red), transparent); }
+    .trust-bar::after  { right: 0; background: linear-gradient(to left,  var(--red), transparent); }
+    .trust-track {
+      display: flex;
+      align-items: center;
+      width: max-content;
+      animation: ticker 52s linear infinite;
+      will-change: transform;
+    }
+    .trust-bar:hover .trust-track { animation-play-state: paused; }
+    @keyframes ticker {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
+    }
+    .trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--cream);
+      padding: 0 32px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .trust-item .ti { font-size: 17px; }
+    .trust-sep {
+      color: rgba(255,255,255,0.35);
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    /* ── SECTIONS BASE ────────────────────────────────── */
+    section { padding: 80px 40px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--flame);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cream);
+      margin: 0 0 0;
+      line-height: 1.1;
+    }
+    .section-title .accent { color: var(--red); }
+    .divider {
+      width: 48px;
+      height: 4px;
+      background: var(--red);
+      margin: 16px 0 48px;
+    }
+
+    /* ── BENEFITS ─────────────────────────────────────── */
+    .benefits { background: var(--grill); }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .benefit-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-top: 3px solid var(--red);
+      border-radius: 6px;
+      padding: 36px 24px;
+      text-align: center;
+      transition: transform 0.25s, border-top-color 0.25s, box-shadow 0.25s;
+    }
+    .benefit-card:hover {
+      transform: translateY(-6px);
+      border-top-color: var(--flame);
+      box-shadow: 0 12px 40px rgba(232, 135, 42, 0.12), 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .benefit-icon {
+      font-size: 44px;
+      margin-bottom: 18px;
+      display: block;
+    }
+    .benefit-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+    .benefit-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── BEFORE / AFTER ───────────────────────────────── */
+    .before-after { background: var(--charcoal); }
+    .ba-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+    }
+    .ba-card {
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--grill);
+      border: 1px solid #2a2a2a;
+      /* scroll reveal: hidden until in view */
+      opacity: 0;
+      transform: translateY(52px);
+      transition:
+        opacity  0.6s ease,
+        transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.25s;
+    }
+    .ba-card.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .ba-card.in-view:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px var(--red);
+    }
+    .ba-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .ba-img-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .ba-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .ba-card:hover .ba-img-wrap img { transform: scale(1.04); }
+    .ba-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      z-index: 1;
+    }
+    .ba-label.before { background: rgba(40,40,40,0.9); color: #aaa; }
+    .ba-label.after { background: var(--red); color: var(--cream); }
+    .ba-caption {
+      padding: 16px 20px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    /* ── REVIEWS ──────────────────────────────────────── */
+    .reviews { background: var(--grill); }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .review-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .review-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    }
+    .review-stars {
+      color: var(--flame);
+      font-size: 18px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    .review-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-style: italic;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .review-author {
+      font-family: 'Oswald', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+    .review-location {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+    .review-platform {
+      font-size: 11px;
+      color: var(--flame);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* ── PROCESS ──────────────────────────────────────── */
+    .process { background: var(--charcoal); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0;
+      counter-reset: steps;
+    }
+    .process-step {
+      padding: 40px 28px;
+      border: 1px solid #2a2a2a;
+      position: relative;
+      counter-increment: steps;
+    }
+    .process-step::before {
+      content: counter(steps, decimal-leading-zero);
+      font-family: 'Oswald', sans-serif;
+      font-size: 64px;
+      font-weight: 700;
+      color: rgba(178, 34, 34, 0.15);
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      line-height: 1;
+    }
+    .step-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--flame);
+      margin-bottom: 12px;
+    }
+    .step-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .step-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── PRICING ──────────────────────────────────────── */
+    .pricing { background: var(--grill); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .price-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 40px 32px;
+      position: relative;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .price-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+    .price-card.featured {
+      border-color: var(--red);
+      border-width: 2px;
+      background: #181010;
+    }
+    .price-tag {
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      background: var(--red);
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 0 8px 0 6px;
+      color: var(--cream);
+    }
+    .price-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .price-sub {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .price-amount {
+      font-family: 'Oswald', sans-serif;
+      font-size: 60px;
+      font-weight: 700;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-amount sup {
+      font-size: 26px;
+      vertical-align: super;
+      line-height: 0;
+    }
+    .price-from {
+      font-size: 12px;
+      color: #555;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .price-divider {
+      width: 100%;
+      height: 1px;
+      background: #2a2a2a;
+      margin-bottom: 24px;
+    }
+    .price-includes {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+    .price-includes li {
+      font-size: 14px;
+      color: var(--muted);
+      padding-left: 22px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .price-includes li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--flame);
+      font-weight: 700;
+    }
+
+    /* ── FAQ ──────────────────────────────────────────── */
+    .faq { background: var(--charcoal); }
+    .faq-list {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .faq-item {
+      background: var(--grill);
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 22px 28px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--cream);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--flame); }
+    .faq-chevron {
+      font-size: 14px;
+      color: var(--flame);
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .faq-q.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 28px;
+    }
+    .faq-a.open {
+      max-height: 300px;
+      padding: 0 28px 22px;
+    }
+    .faq-a p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── FOOTER CTA ───────────────────────────────────── */
+    .cta-footer {
+      position: relative;
+      overflow: hidden;
+      background: #0d0d0d;
+      border-top: 3px solid var(--red);
+      text-align: center;
+      padding: 90px 40px;
+    }
+    .cta-footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 120%, rgba(178,34,34,0.25) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-footer .container { position: relative; z-index: 1; }
+    .cta-footer h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(30px, 5vw, 52px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--cream);
+      margin: 0 0 16px;
+      line-height: 1.1;
+    }
+    .cta-footer h2 span { color: var(--red); }
+    .cta-footer .sub {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-phone {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      color: var(--flame);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 36px;
+      letter-spacing: 2px;
+      transition: color 0.2s;
+    }
+    .cta-phone:hover { color: var(--cream); }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── SITE FOOTER ──────────────────────────────────── */
+    .site-footer {
+      background: #0a0a0a;
+      padding: 60px 40px 0;
+      border-top: 1px solid #1a1a1a;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+    }
+    .footer-col-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--flame);
+      margin-bottom: 18px;
+    }
+    .footer-col p {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.8;
+    }
+    .footer-col a {
+      font-size: 13px;
+      color: #666;
+      line-height: 2.2;
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--muted); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 0;
+      border-top: 1px solid #1a1a1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-bottom p { font-size: 12px; color: #3a3a3a; }
+
+    .area-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .area-pill {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid #2a2a2a;
+      border-radius: 3px;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .site-nav { padding: 0 20px; }
+      section { padding: 56px 20px; }
+      .hero-content { padding: 60px 20px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .trust-item { padding: 0 20px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="topbar">
+    🔥 North County San Diego's BBQ Grill Cleaning Experts — Call (760) 505-4269 to Book
+  </div>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <div class="nav-logo">
+      <img src="brand_assests/Artboard_1.png" alt="Grime to Prime BBQ Cleaning Co." />
+    </div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#area">Service Area</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="tel:7605054269" class="nav-phone">📞 (760) 505-4269</a>
+      <a href="#contact" class="btn-red">Book Now</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0;">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">North County San Diego's #1 BBQ Cleaning Service</div>
+      <h1>BBQ Grill Cleaning<br /><span class="accent">Service</span></h1>
+      <div class="hero-location">Encinitas · Carlsbad · Oceanside</div>
+      <p class="hero-sub">Professional deep cleaning for gas, charcoal, kamado, and smoker grills. We remove years of grease, carbon buildup, and bacteria — leaving your grill restaurant-clean and cook-ready.</p>
+      <div class="hero-stars">
+        <span class="stars">★★★★★</span>
+        <span>Serving All of North County San Diego</span>
+      </div>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-red" style="font-size:15px; padding:15px 40px; letter-spacing:2.5px;">Book a Clean</a>
+        <a href="#results" class="btn-outline" style="font-size:15px; padding:15px 40px;">See Our Results</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST TICKER -->
+  <div class="trust-bar">
+    <div class="trust-track">
+      <span class="trust-item"><span class="ti">🔥</span> North County's Grill Experts</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">🏠</span> Family Owned &amp; Operated</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">✅</span> Food-Safe Products Only</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">📍</span> North County San Diego</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">💯</span> Satisfaction Guaranteed</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">⚡</span> No Hidden Fees</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">📅</span> Same-Week Booking</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">🔧</span> Licensed &amp; Bonded</span>
+      <span class="trust-sep">◆</span>
+      <!-- duplicate for seamless loop -->
+      <span class="trust-item"><span class="ti">🔥</span> North County's Grill Experts</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">🏠</span> Family Owned &amp; Operated</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">✅</span> Food-Safe Products Only</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">📍</span> North County San Diego</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">💯</span> Satisfaction Guaranteed</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">⚡</span> No Hidden Fees</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">📅</span> Same-Week Booking</span>
+      <span class="trust-sep">◆</span>
+      <span class="trust-item"><span class="ti">🔧</span> Licensed &amp; Bonded</span>
+      <span class="trust-sep">◆</span>
+    </div>
+  </div>
+
+  <!-- BENEFITS -->
+  <section class="benefits" id="services">
+    <div class="container">
+      <div class="section-eyebrow">Why it matters</div>
+      <div class="section-title">Benefits of a <span class="accent">Clean Grill</span></div>
+      <div class="divider"></div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="benefit-icon">🛡️</span>
+          <div class="benefit-title">Safety First</div>
+          <div class="benefit-text">Grease buildup is a leading cause of dangerous flare-ups and grill fires. A professional clean dramatically reduces this risk for your family.</div>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">⚡</span>
+          <div class="benefit-title">Better Performance</div>
+          <div class="benefit-text">Clean burners and grates heat evenly and efficiently. Reach your target temp faster and maintain consistent heat throughout every cook.</div>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🔥</span>
+          <div class="benefit-title">Enhanced Flavor</div>
+          <div class="benefit-text">Old carbon and rancid grease leave bitter, off flavors on your food. A spotless grill means clean, pure BBQ flavor with every bite.</div>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">⏱️</span>
+          <div class="benefit-title">Extended Life</div>
+          <div class="benefit-text">Regular cleaning prevents corrosion and rust that destroy grill components. Protect your investment and add years to your grill's life.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section class="before-after" id="results">
+    <div class="container">
+      <div class="section-eyebrow">Our work speaks for itself</div>
+      <div class="section-title">BBQ Cleaning <span class="accent">Results</span></div>
+      <div class="divider"></div>
+      <div class="ba-grid">
+
+        <div class="ba-card">
+          <div class="ba-images">
+            <div class="ba-img-wrap">
+              <img src="brand_assests/IMG_1124.JPG" alt="Dirty grill before cleaning" loading="lazy" />
+              <span class="ba-label before">Before</span>
+            </div>
+            <div class="ba-img-wrap">
+              <img src="brand_assests/IMG_1125.JPG" alt="Clean grill after cleaning" loading="lazy" />
+              <span class="ba-label after">After</span>
+            </div>
+          </div>
+          <div class="ba-caption">Gas Grill — Interior Deep Clean</div>
+        </div>
+
+        <div class="ba-card">
+          <div class="ba-images">
+            <div class="ba-img-wrap">
+              <img src="brand_assests/IMG_1059.JPG" alt="Dirty grill before cleaning" loading="lazy" />
+              <span class="ba-label before">Before</span>
+            </div>
+            <div class="ba-img-wrap">
+              <img src="brand_assests/IMG_1063.JPG" alt="Clean grill after cleaning" loading="lazy" />
+              <span class="ba-label after">After</span>
+            </div>
+          </div>
+          <div class="ba-caption">Gas Grill — Burner &amp; Grate Restoration</div>
+        </div>
+
+        <div class="ba-card">
+          <div class="ba-images">
+            <div class="ba-img-wrap">
+              <img src="brand_assests/IMG_1023.JPG" alt="Dirty kamado grill before cleaning" loading="lazy" />
+              <span class="ba-label before">Before</span>
+            </div>
+            <div class="ba-img-wrap">
+              <img src="brand_assests/IMG_1057.JPG" alt="Clean kamado grill after cleaning" loading="lazy" />
+              <span class="ba-label after">After</span>
+            </div>
+          </div>
+          <div class="ba-caption">Kamado / Ceramic Grill Deep Clean</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="process">
+    <div class="container">
+      <div class="section-eyebrow">Simple &amp; hassle-free</div>
+      <div class="section-title">How It <span class="accent">Works</span></div>
+      <div class="divider"></div>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-num">Step 01</div>
+          <div class="step-title">Book Online or Call</div>
+          <div class="step-text">Choose a time that works for you. We'll confirm your appointment and give you a price estimate based on your grill type.</div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">Step 02</div>
+          <div class="step-title">We Come to You</div>
+          <div class="step-text">Our technician arrives with all equipment and supplies. No need to transport your grill — we do everything on-site at your home.</div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">Step 03</div>
+          <div class="step-title">Full Deep Clean</div>
+          <div class="step-text">We disassemble, degrease, scrub, sanitize, and inspect every component of your grill using food-safe professional-grade products.</div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">Step 04</div>
+          <div class="step-title">Cook-Ready Results</div>
+          <div class="step-text">Your grill is reassembled, inspected, and ready to cook. We walk you through what we did and share any recommendations.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE AREA -->
+  <section class="reviews" id="area" style="background: var(--grill);">
+    <div class="container">
+      <div class="section-eyebrow">Where we work</div>
+      <div class="section-title">Serving <span class="accent">North County</span> San Diego</div>
+      <div class="divider"></div>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
+
+        <div class="benefit-card" style="text-align:left; padding:24px;">
+          <div class="benefit-title" style="font-size:16px; margin-bottom:6px;">📍 Encinitas</div>
+          <div class="benefit-text">Leucadia, Cardiff-by-the-Sea, Olivenhain</div>
+        </div>
+
+        <div class="benefit-card" style="text-align:left; padding:24px;">
+          <div class="benefit-title" style="font-size:16px; margin-bottom:6px;">📍 Carlsbad</div>
+          <div class="benefit-text">La Costa, Bressi Ranch, Aviara, Barrio</div>
+        </div>
+
+        <div class="benefit-card" style="text-align:left; padding:24px;">
+          <div class="benefit-title" style="font-size:16px; margin-bottom:6px;">📍 Oceanside</div>
+          <div class="benefit-text">South Oceanside, Fire Mountain, Rancho del Oro</div>
+        </div>
+
+        <div class="benefit-card" style="text-align:left; padding:24px;">
+          <div class="benefit-title" style="font-size:16px; margin-bottom:6px;">📍 San Marcos</div>
+          <div class="benefit-text">Twin Oaks Valley, Richland, Discovery Hills</div>
+        </div>
+
+        <div class="benefit-card" style="text-align:left; padding:24px;">
+          <div class="benefit-title" style="font-size:16px; margin-bottom:6px;">📍 Vista</div>
+          <div class="benefit-text">Shadowridge, Brengle Terrace, Alta Vista</div>
+        </div>
+
+        <div class="benefit-card" style="text-align:left; padding:24px;">
+          <div class="benefit-title" style="font-size:16px; margin-bottom:6px;">📍 &amp; More</div>
+          <div class="benefit-text">Del Mar, Solana Beach, Rancho Santa Fe, Escondido</div>
+        </div>
+
+      </div>
+      <p style="text-align:center; margin-top:36px; font-size:14px; color:var(--muted);">Not sure if we cover your area? Call <a href="tel:7605054269" style="color:var(--flame); text-decoration:none;">(760) 505-4269</a> and we'll let you know.</p>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-eyebrow">Transparent, no-surprise pricing</div>
+      <div class="section-title">Our Grill Cleaning <span class="accent">Packages</span></div>
+      <div class="divider"></div>
+      <div class="pricing-grid">
+
+        <div class="price-card">
+          <div class="price-name">Standard Gas Grill</div>
+          <div class="price-sub">2–4 burner gas and propane grills</div>
+          <div class="price-amount"><sup>$</sup>160</div>
+          <div class="price-from">Flat Rate</div>
+          <div class="price-divider"></div>
+          <ul class="price-includes">
+            <li>Full interior degreasing</li>
+            <li>Burner inspection &amp; cleaning</li>
+            <li>Grate scrub &amp; season</li>
+            <li>Grease trap clean-out</li>
+            <li>Igniter check</li>
+            <li>Exterior wipe-down</li>
+          </ul>
+          <a href="#contact" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
+        </div>
+
+        <div class="price-card featured">
+          <div class="price-tag">Most Popular</div>
+          <div class="price-name">Large Gas Grill</div>
+          <div class="price-sub">5–6 burner gas grills &amp; built-in outdoor grills</div>
+          <div class="price-amount"><sup>$</sup>200</div>
+          <div class="price-from">Flat Rate</div>
+          <div class="price-divider"></div>
+          <ul class="price-includes">
+            <li>Everything in Standard</li>
+            <li>Full disassembly &amp; reassembly</li>
+            <li>Heat tent / flavorizer bar clean</li>
+            <li>Igniter &amp; valve inspection</li>
+            <li>Deep grate restoration</li>
+            <li>Post-clean seasoning</li>
+          </ul>
+          <a href="#contact" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
+        </div>
+
+        <div class="price-card">
+          <div class="price-name">Smoker &amp; Commercial</div>
+          <div class="price-sub">Offset smokers, pellet grills &amp; commercial restaurant units</div>
+          <div class="price-amount"><sup>$</sup>220</div>
+          <div class="price-from">Starting From</div>
+          <div class="price-divider"></div>
+          <ul class="price-includes">
+            <li>Full interior deep clean</li>
+            <li>Firebox &amp; smoke chamber clean</li>
+            <li>Pellet auger inspection</li>
+            <li>Stack &amp; vent cleaning</li>
+            <li>Full sanitization treatment</li>
+            <li>Health code compliance ready</li>
+          </ul>
+          <a href="#contact" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
+        </div>
+
+        <div class="price-card" style="border-top: 3px solid var(--flame);">
+          <div class="price-name" style="color:var(--flame);">Kamado / Big Green Egg</div>
+          <div class="price-sub">Big Green Egg, Kamado Joe, ceramic &amp; charcoal cookers</div>
+          <div style="display:flex; gap:16px; align-items:flex-end; margin-bottom:4px; flex-wrap:wrap;">
+            <div>
+              <div class="price-amount"><sup>$</sup>100</div>
+              <div class="price-from">Standalone</div>
+            </div>
+            <div style="padding-bottom:28px; color:var(--muted); font-size:13px; line-height:1.4;">— or —</div>
+            <div>
+              <div class="price-amount" style="color:var(--flame);"><sup style="font-size:20px;">$</sup>75</div>
+              <div class="price-from" style="color:var(--flame);">Bundle Add-on</div>
+            </div>
+          </div>
+          <div style="background:#1a1a1a; border:1px solid #2a2a2a; border-radius:4px; padding:12px 14px; margin-bottom:24px; font-size:13px; color:var(--muted); line-height:1.6;">
+            <strong style="color:var(--flame);">Bundle deal:</strong> Book any BBQ package + add a kamado clean for just <strong style="color:var(--cream);">$75</strong> — save $25.
+          </div>
+          <div class="price-divider"></div>
+          <ul class="price-includes">
+            <li>Ceramic / deflector stone cleaning</li>
+            <li>Full disassembly &amp; reassembly</li>
+            <li>Gasket &amp; seal inspection</li>
+            <li>Temperature calibration check</li>
+            <li>Post-clean seasoning</li>
+          </ul>
+          <a href="#contact" class="btn-red" style="width:100%; text-align:center; background:var(--flame); border-color:var(--flame); color:#111;">Book + Bundle</a>
+        </div>
+
+      </div>
+      <p style="text-align:center; font-size:13px; color:#555; margin-top:28px;">Final price confirmed on-site. Have both a gas grill and a kamado? Ask about our bundle discount.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-eyebrow" style="text-align:center;">Have questions?</div>
+      <div class="section-title" style="text-align:center;">Frequently Asked <span class="accent">Questions</span></div>
+      <div class="divider" style="margin:16px auto 48px;"></div>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How long does a grill cleaning take?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-a">
+            <p>Most standard gas grill cleanings take 1.5 to 2 hours. Larger grills, kamados, and smokers typically take 2.5–3 hours. We'll give you an accurate time estimate when you book based on your specific grill.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            What products do you use? Are they food-safe?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-a">
+            <p>Yes — all our cleaning agents are food-safe and biodegradable. We use commercial-grade degreasers that are completely safe for food contact surfaces once rinsed. Your family's safety is our top priority.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How often should I have my grill professionally cleaned?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-a">
+            <p>We recommend a professional deep clean 1–2 times per year for average home use. Heavy users and restaurants should schedule every 3 months. Regular maintenance keeps your grill performing safely and extends its lifespan significantly.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Do you clean grills at my home?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-a">
+            <p>Absolutely — we come directly to you. We bring all our own professional equipment and supplies. Just make sure we have access to a water source and some working space around the grill, and we'll take care of everything else.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            What types of grills do you clean?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-a">
+            <p>We clean all types of grills: gas, propane, charcoal, kamado (Big Green Egg, Kamado Joe, etc.), pellet grills, offset smokers, and commercial restaurant grills. If you're not sure, just give us a call and we'll let you know.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            What areas of North County San Diego do you serve?
+            <span class="faq-chevron">▼</span>
+          </button>
+          <div class="faq-a">
+            <p>We serve all of North County San Diego including Encinitas, Carlsbad, Oceanside, San Marcos, Vista, Solana Beach, Del Mar, Rancho Santa Fe, Escondido, and surrounding communities. Not sure if you're in our service area? Just give us a call at (760) 505-4269.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <section class="cta-footer" id="contact">
+    <div class="container">
+      <div class="section-eyebrow" style="text-align:center; margin-bottom:12px;">Ready to cook clean?</div>
+      <h2>Schedule Your BBQ<br /><span>Cleaning Today</span></h2>
+      <p class="sub">Don't let a dirty grill ruin your next cookout. Call us or fill out our contact form — we'll have it spotless.</p>
+      <a href="tel:7605054269" class="cta-phone">(760) 505-4269</a>
+      <div class="cta-btns">
+        <a href="mailto:grimetoprime12@gmail.com" class="btn-flame">Get a Free Quote</a>
+        <a href="tel:7605054269" class="btn-outline">Call Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+
+      <div class="footer-col">
+        <img src="brand_assests/Artboard_1.png" alt="Grime to Prime BBQ Cleaning Co." style="height:64px; margin-bottom:20px; display:block;" />
+        <p>Professional BBQ grill cleaning services for homeowners and restaurants across North County San Diego. From grime to prime — guaranteed.</p>
+        <div class="area-pills">
+          <span class="area-pill">Encinitas</span>
+          <span class="area-pill">Carlsbad</span>
+          <span class="area-pill">Oceanside</span>
+          <span class="area-pill">San Marcos</span>
+          <span class="area-pill">Vista</span>
+          <span class="area-pill">Solana Beach</span>
+          <span class="area-pill">Del Mar</span>
+          <span class="area-pill">Escondido</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Services</div>
+        <a href="#pricing">Standard Gas Grill Clean</a>
+        <a href="#pricing">Large &amp; Kamado Grill Clean</a>
+        <a href="#pricing">Smoker &amp; Pellet Grill Clean</a>
+        <a href="#pricing">Commercial Restaurant Service</a>
+        <a href="#pricing">Maintenance Plans</a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <a href="#services">About Us</a>
+        <a href="#results">Our Results</a>
+        <a href="#area">Service Area</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <a href="tel:7605054269">📞 (760) 505-4269</a>
+        <a href="mailto:grimetoprime12@gmail.com">✉ grimetoprime12@gmail.com</a>
+        <p style="margin-top:8px;">North County San Diego, CA</p>
+        <p>Mon–Sat: 8:00am – 6:00pm</p>
+        <p>Sunday: By Appointment</p>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Grime to Prime BBQ Cleaning Co. All rights reserved.</p>
+      <p>Serving North County San Diego, CA</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const isOpen = btn.classList.contains('open');
+      document.querySelectorAll('.faq-q.open').forEach(q => {
+        q.classList.remove('open');
+        q.nextElementSibling.classList.remove('open');
+      });
+      if (!isOpen) {
+        btn.classList.add('open');
+        answer.classList.add('open');
+      }
+    }
+
+    // Before/After scroll-reveal — re-animates every pass
+    document.querySelectorAll('.ba-card').forEach((card, i) => {
+      card.style.transitionDelay = (i * 0.15) + 's';
+
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          // entering viewport from below — animate in
+          card.classList.add('in-view');
+        } else if (entry.boundingClientRect.top > 0) {
+          // exited below the viewport (user scrolled back up) — reset for next pass
+          card.classList.remove('in-view');
+        }
+        // when card exits above the viewport (scrolled past), leave it visible
+      }, { threshold: 0.12 }).observe(card);
+    });
+  </script>
+
+</body>
+</html>
