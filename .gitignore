@@ -1,4 +1,5 @@
 node_modules/
 temporary screenshots/
 *.png
+!brand_assests/*.png
 .claude/

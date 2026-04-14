@@ -726,7 +726,6 @@
     /* ── FOOTER CTA ───────────────────────────────────── */
     .cta-footer {
       position: relative;
-      overflow: hidden;
       background: #0d0d0d;
       border-top: 3px solid var(--red);
       text-align: center;
@@ -736,7 +735,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 120%, rgba(178,34,34,0.25) 0%, transparent 65%);
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(178,34,34,0.28) 0%, transparent 100%);
       pointer-events: none;
     }
     .cta-footer .container { position: relative; z-index: 1; }
@@ -841,6 +840,201 @@
       color: #555;
     }
 
+    /* ── FLOATING NEWSLETTER ─────────────────────────── */
+    .nl-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 200;
+      width: 340px;
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-top: 3px solid var(--red);
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(178,34,34,0.15);
+      transform: translateY(120%);
+      opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+      pointer-events: none;
+    }
+    .nl-float.nl-visible {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nl-float.nl-hidden {
+      transform: translateY(120%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .nl-float-header {
+      padding: 18px 20px 0;
+      position: relative;
+    }
+    .nl-float-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--flame);
+      margin-bottom: 4px;
+    }
+    .nl-float-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--cream);
+      line-height: 1.15;
+      margin: 0;
+    }
+    .nl-float-title span { color: var(--red); }
+    .nl-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 26px;
+      height: 26px;
+      background: #2a2a2a;
+      border: none;
+      border-radius: 50%;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 26px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .nl-close:hover {
+      background: var(--red);
+      color: var(--cream);
+      transform: scale(1.1);
+    }
+    .nl-float-body { padding: 16px 20px 20px; }
+    .nl-float-desc {
+      font-size: 12px;
+      color: #777;
+      line-height: 1.6;
+      margin: 0 0 14px;
+    }
+    .nl-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .nl-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .nl-field:last-of-type { margin-bottom: 0; }
+    .nl-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .nl-input {
+      background: #1c1c1c;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 9px 11px;
+      font-size: 13px;
+      color: var(--cream);
+      font-family: 'Open Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .nl-input::placeholder { color: #444; }
+    .nl-input:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(178,34,34,0.15);
+    }
+    .nl-input.error { border-color: #e05; }
+    .nl-error {
+      font-size: 11px;
+      color: #ff4466;
+      margin-top: 2px;
+      display: none;
+    }
+    .nl-submit {
+      width: 100%;
+      margin-top: 12px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--flame) 0%, #c96b10 50%, var(--red) 100%);
+      background-size: 200% 200%;
+      background-position: 100% 100%;
+      color: #111;
+      border: none;
+      border-radius: 4px;
+      padding: 13px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(232,135,42,0.35), 0 2px 6px rgba(0,0,0,0.4);
+      transition: background-position 0.4s ease, box-shadow 0.25s ease, transform 0.15s ease;
+    }
+    .nl-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .nl-submit:hover {
+      background-position: 0% 0%;
+      box-shadow: 0 6px 28px rgba(232,135,42,0.55), 0 2px 8px rgba(0,0,0,0.5);
+      transform: translateY(-2px);
+      color: #111;
+    }
+    .nl-submit:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(232,135,42,0.3); }
+    .nl-submit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+    .nl-spinner {
+      display: none;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgba(240,234,214,0.3);
+      border-top-color: var(--cream);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .nl-success {
+      display: none;
+      text-align: center;
+      padding: 20px 0 8px;
+    }
+    .nl-success-icon { font-size: 42px; margin-bottom: 10px; display: block; }
+    .nl-success-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--flame);
+      margin-bottom: 8px;
+    }
+    .nl-success-msg { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .site-nav { padding: 0 20px; }
@@ -848,6 +1042,8 @@
       .hero-content { padding: 60px 20px; }
       .footer-inner { grid-template-columns: 1fr 1fr; }
       .trust-item { padding: 0 20px; font-size: 12px; }
+      .nl-float { width: calc(100vw - 32px); right: 16px; bottom: 16px; }
+      .nl-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -1188,6 +1384,62 @@
     </div>
   </section>
 
+  <!-- FOOTER CTA -->
+  <section class="cta-footer" id="contact">
+    <div class="container">
+      <div class="section-eyebrow" style="text-align:center; margin-bottom:12px;">Ready to cook clean?</div>
+      <h2>Schedule Your BBQ<br /><span>Cleaning Today</span></h2>
+      <p class="sub">Don't let a dirty grill ruin your next cookout. Call us or fill out our contact form — we'll have it spotless.</p>
+      <a href="tel:7605054269" class="cta-phone">(760) 505-4269</a>
+      <div class="cta-btns">
+        <a href="mailto:grimetoprime12@gmail.com" class="btn-flame">Get a Free Quote</a>
+        <a href="tel:7605054269" class="btn-outline">Call Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING NEWSLETTER -->
+  <div class="nl-float" id="nl-float" aria-label="Newsletter signup">
+    <div class="nl-float-header">
+      <div class="nl-float-eyebrow">Stay in the loop</div>
+      <p class="nl-float-title">BBQ Tips &amp; <span>Exclusive Deals</span></p>
+      <button class="nl-close" id="nl-close" aria-label="Close newsletter signup">✕</button>
+    </div>
+    <div class="nl-float-body">
+      <div id="nl-form-wrap">
+        <p class="nl-float-desc">Seasonal promotions &amp; grill care tips for North County San Diego homeowners. No spam, ever.</p>
+        <form id="nl-form" novalidate>
+          <div class="nl-row">
+            <div class="nl-field">
+              <label class="nl-label" for="nl-first">First Name</label>
+              <input class="nl-input" type="text" id="nl-first" name="firstName" placeholder="John" autocomplete="given-name" />
+              <span class="nl-error" id="nl-first-err">Required</span>
+            </div>
+            <div class="nl-field">
+              <label class="nl-label" for="nl-last">Last Name</label>
+              <input class="nl-input" type="text" id="nl-last" name="lastName" placeholder="Doe" autocomplete="family-name" />
+              <span class="nl-error" id="nl-last-err">Required</span>
+            </div>
+          </div>
+          <div class="nl-field">
+            <label class="nl-label" for="nl-email">Email Address</label>
+            <input class="nl-input" type="email" id="nl-email" name="email" placeholder="name@example.com" autocomplete="email" />
+            <span class="nl-error" id="nl-email-err">Enter a valid email</span>
+          </div>
+          <button type="submit" class="nl-submit" id="nl-submit">
+            <span class="nl-spinner" id="nl-spinner"></span>
+            <span id="nl-btn-text">🔥 Subscribe — It's Free</span>
+          </button>
+        </form>
+      </div>
+      <div class="nl-success" id="nl-success">
+        <span class="nl-success-icon">🔥</span>
+        <div class="nl-success-title">You're On the List!</div>
+        <p class="nl-success-msg">BBQ tips and exclusive deals are headed to your inbox. Time to fire up the grill.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- FAQ -->
   <section class="faq" id="faq">
     <div class="container">
@@ -1260,20 +1512,6 @@
     </div>
   </section>
 
-  <!-- FOOTER CTA -->
-  <section class="cta-footer" id="contact">
-    <div class="container">
-      <div class="section-eyebrow" style="text-align:center; margin-bottom:12px;">Ready to cook clean?</div>
-      <h2>Schedule Your BBQ<br /><span>Cleaning Today</span></h2>
-      <p class="sub">Don't let a dirty grill ruin your next cookout. Call us or fill out our contact form — we'll have it spotless.</p>
-      <a href="tel:7605054269" class="cta-phone">(760) 505-4269</a>
-      <div class="cta-btns">
-        <a href="mailto:grimetoprime12@gmail.com" class="btn-flame">Get a Free Quote</a>
-        <a href="tel:7605054269" class="btn-outline">Call Now</a>
-      </div>
-    </div>
-  </section>
-
   <!-- SITE FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
@@ -1340,6 +1578,90 @@
         answer.classList.add('open');
       }
     }
+
+    // Floating newsletter
+    (function() {
+      const widget  = document.getElementById('nl-float');
+      const closeBtn = document.getElementById('nl-close');
+      const form    = document.getElementById('nl-form');
+      const spinner = document.getElementById('nl-spinner');
+      const btnText = document.getElementById('nl-btn-text');
+      const submit  = document.getElementById('nl-submit');
+      const hero    = document.querySelector('.hero');
+      let shown = false;
+      let dismissed = false;
+
+      // Show once user scrolls past the hero
+      function onScroll() {
+        if (dismissed) return;
+        const heroBottom = hero ? hero.getBoundingClientRect().bottom : 400;
+        if (!shown && heroBottom < 0) {
+          shown = true;
+          widget.classList.add('nl-visible');
+        } else if (shown && !dismissed && heroBottom >= 0) {
+          widget.classList.remove('nl-visible');
+          shown = false;
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Close / dismiss
+      closeBtn.addEventListener('click', function() {
+        dismissed = true;
+        widget.classList.remove('nl-visible');
+        widget.classList.add('nl-hidden');
+      });
+
+      function showErr(inputId, errId, show) {
+        const inp = document.getElementById(inputId);
+        const err = document.getElementById(errId);
+        inp.classList.toggle('error', show);
+        err.style.display = show ? 'block' : 'none';
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const first = document.getElementById('nl-first').value.trim();
+        const last  = document.getElementById('nl-last').value.trim();
+        const email = document.getElementById('nl-email').value.trim();
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        showErr('nl-first', 'nl-first-err', !first);
+        showErr('nl-last',  'nl-last-err',  !last);
+        showErr('nl-email', 'nl-email-err', !emailOk);
+        if (!first || !last || !emailOk) return;
+
+        // ── Paste your Google Apps Script Web App URL below ──
+        var SHEET_URL = 'https://script.google.com/macros/s/AKfycbwrg_N8ep61B4mTp2xLWrZcW-8dR63SBwgRfB3CfowRb0aHP9ooT09aQEe1NeLFo7CpCA/exec';
+
+        submit.disabled = true;
+        spinner.style.display = 'inline-block';
+        btnText.textContent = 'Subscribing…';
+
+        fetch(SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName: first, lastName: last, email: email })
+        })
+        .then(function() {
+          document.getElementById('nl-form-wrap').style.display = 'none';
+          document.getElementById('nl-success').style.display = 'block';
+        })
+        .catch(function() {
+          document.getElementById('nl-form-wrap').style.display = 'none';
+          document.getElementById('nl-success').style.display = 'block';
+        });
+      });
+
+      ['nl-first','nl-last','nl-email'].forEach(function(id) {
+        document.getElementById(id).addEventListener('input', function() {
+          this.classList.remove('error');
+          const errEl = document.getElementById(id + '-err');
+          if (errEl) errEl.style.display = 'none';
+        });
+      });
+    })();
 
     // Before/After scroll-reveal — re-animates every pass
     document.querySelectorAll('.ba-card').forEach((card, i) => {
