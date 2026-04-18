@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Cleaning — Grime to Prime BBQ Cleaning Co.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red:       #B22222;
+      --red-dark:  #8B1A1A;
+      --flame:     #E8872A;
+      --charcoal:  #111111;
+      --grill:     #1C1C1C;
+      --cream:     #F0EAD6;
+      --muted:     #C8C0AD;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #EBEBEB;
+      color: #222;
+      font-family: 'Open Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ─────────────────────────────────────── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--grill);
+      border-bottom: 3px solid var(--red);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+    .nav-logo img {
+      height: 54px;
+      object-fit: contain;
+    }
+    .nav-back {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--flame); }
+    .nav-phone {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .nav-phone:hover { color: var(--flame); }
+
+    /* ── PAGE HERO STRIP ─────────────────────────── */
+    .page-hero {
+      background: var(--charcoal);
+      border-bottom: 1px solid #2a2a2a;
+      padding: 40px 40px 36px;
+      text-align: center;
+    }
+    .page-hero h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin: 0 0 8px;
+    }
+    .page-hero h1 span { color: var(--flame); }
+    .page-hero p {
+      font-size: 15px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ── FORM WRAPPER ────────────────────────────── */
+    .form-wrap {
+      max-width: 880px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+    }
+
+    .form-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 44px 48px;
+      box-shadow:
+        0 2px 4px rgba(0,0,0,0.06),
+        0 8px 24px rgba(0,0,0,0.10),
+        0 24px 48px rgba(0,0,0,0.07);
+    }
+
+    /* ── SECTION HEADING ─────────────────────────── */
+    .form-section-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 32px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #EBEBEB;
+    }
+    .form-section-title:first-of-type { margin-top: 0; }
+
+    /* ── FIELD GRID ──────────────────────────────── */
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 20px;
+    }
+    .field-grid.single { grid-template-columns: 1fr; }
+
+    @media (max-width: 600px) {
+      .field-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 28px 20px; }
+    }
+
+    /* ── INPUTS ──────────────────────────────────── */
+    .form-input {
+      width: 100%;
+      padding: 13px 16px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      color: #333;
+      background: #fff;
+      border: 1.5px solid #D4D4D4;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-input::placeholder { color: #999; }
+    .form-input:focus {
+      border-color: var(--flame);
+      box-shadow: 0 0 0 3px rgba(232, 135, 42, 0.15);
+    }
+
+    select.form-input {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    select.form-input option[value=""] { color: #999; }
+
+    /* ── CHECKBOXES ──────────────────────────────── */
+    .desired-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #1a1a1a;
+      margin: 24px 0 12px;
+      display: block;
+    }
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 16px;
+      margin-bottom: 8px;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+      user-select: none;
+    }
+    .checkbox-label input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      border: 1.5px solid #aaa;
+      border-radius: 3px;
+      accent-color: var(--flame);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ── SIZING LINK ─────────────────────────────── */
+    .sizing-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--flame);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: color 0.2s;
+    }
+    .sizing-link:hover { color: #d07824; text-decoration: underline; }
+
+    /* ── DIVIDER ─────────────────────────────────── */
+    .form-divider {
+      height: 1px;
+      background: #EBEBEB;
+      margin: 28px 0;
+    }
+
+    /* ── SMS DISCLAIMER ──────────────────────────── */
+    .sms-disclaimer {
+      font-size: 12px;
+      color: #777;
+      line-height: 1.6;
+      margin: 20px 0 24px;
+    }
+    .sms-disclaimer a {
+      color: var(--flame);
+      text-decoration: none;
+    }
+    .sms-disclaimer a:hover { text-decoration: underline; }
+
+    /* ── SUBMIT BUTTON ───────────────────────────── */
+    .btn-submit {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--flame);
+      color: #fff;
+      padding: 16px 52px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(232, 135, 42, 0.35);
+    }
+    .btn-submit:hover {
+      background: #d07824;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232, 135, 42, 0.45);
+    }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── SUCCESS STATE ───────────────────────────── */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .success-msg .checkmark {
+      font-size: 56px;
+      margin-bottom: 16px;
+    }
+    .success-msg h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 10px;
+    }
+    .success-msg p {
+      font-size: 15px;
+      color: #666;
+      margin: 0 0 24px;
+    }
+    .success-msg .back-home {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--red);
+      padding: 12px 28px;
+      border-radius: 4px;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .success-msg .back-home:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    .page-footer {
+      background: var(--charcoal);
+      border-top: 3px solid var(--red);
+      text-align: center;
+      padding: 24px 20px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+    .page-footer a { color: var(--flame); text-decoration: none; }
+    .page-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="brand_assests/Artboard_1.png" alt="Grime to Prime BBQ Cleaning Co." />
+    </a>
+    <a href="index.html" class="nav-back">&#8592; Back to Home</a>
+    <a href="tel:7605054269" class="nav-phone">(760) 505-4269</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <h1>Book a <span>BBQ Cleaning</span></h1>
+    <p>Fill out the form below and we'll get back to you to confirm your appointment.</p>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-wrap">
+    <div class="form-card">
+
+      <!-- SUCCESS MESSAGE (shown after submit) -->
+      <div class="success-msg" id="successMsg">
+        <div class="checkmark">&#10003;</div>
+        <h2>Request Received!</h2>
+        <p>Thanks! We'll reach out to you shortly to confirm your cleaning appointment.</p>
+        <a href="index.html" class="back-home">Back to Home</a>
+      </div>
+
+      <!-- BOOKING FORM -->
+      <!-- TODO: Replace YOUR_FORM_ID below with your Formspree form ID -->
+      <!-- Steps: 1) Go to formspree.io  2) Sign up free  3) Create new form with email grimetoprime12@gmail.com  4) Copy your form ID and paste it here -->
+      <form id="bookingForm" action="https://formspree.io/f/mwvakgrr" method="POST">
+
+        <p class="form-section-title">Your Contact Info</p>
+
+        <div class="field-grid">
+          <input class="form-input" type="text"  name="firstName"  placeholder="First Name"  required />
+          <input class="form-input" type="text"  name="lastName"   placeholder="Last Name"   required />
+          <input class="form-input" type="email" name="email"      placeholder="Email"       required />
+          <input class="form-input" type="tel"   name="phone"      placeholder="Phone"       required />
+          <input class="form-input" type="text"  name="city"       placeholder="City"        required />
+          <input class="form-input" type="text"  name="zipCode"    placeholder="Zip Code"    required />
+        </div>
+
+        <span class="desired-label">Desired Service</span>
+        <div class="checkbox-grid">
+          <label class="checkbox-label">
+            <input type="checkbox" name="service" value="Grill Cleaning" /> Grill Cleaning
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="service" value="Grill Repair" /> Grill Repair
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="service" value="New Grill" /> New Grill
+          </label>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <p class="form-section-title">Tell us about your grill <span style="font-weight:400; color:var(--muted); font-size:0.85em;">(optional)</span></p>
+
+        <div class="field-grid">
+          <input class="form-input" type="text" name="grillMake"  placeholder="Make of Grill" />
+          <input class="form-input" type="text" name="grillModel" placeholder="Model of Grill" />
+        </div>
+
+        <div style="margin-top:14px;">
+          <select class="form-input" name="grillLength">
+            <option value="" disabled selected>Length of Grill</option>
+            <option value="Under 24 inches">Under 24"</option>
+            <option value="24-36 inches">24" – 36"</option>
+            <option value="36-48 inches">36" – 48"</option>
+            <option value="48-60 inches">48" – 60"</option>
+            <option value="Over 60 inches">Over 60"</option>
+          </select>
+          <a href="#sizingChart" class="sizing-link">Sizing Chart</a>
+        </div>
+
+        <div style="margin-top:14px;">
+          <select class="form-input" name="hearAboutUs">
+            <option value="" disabled selected>How Did you Hear About Us?</option>
+            <option value="Google">Google</option>
+            <option value="Yelp">Yelp</option>
+            <option value="Nextdoor">Nextdoor</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Friend or Family">Friend / Family</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <p class="sms-disclaimer">
+          By clicking Submit I agree to receive recurring SMS messages from Grime to Prime BBQ Cleaning Co.
+          Message and data rates may apply. Reply STOP to opt out of future messaging. Reply HELP for more
+          information. Message frequency varies. Review our <a href="#">Privacy Policy</a>.
+        </p>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Submit</button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- SIZING CHART (anchor target) -->
+  <div id="sizingChart" style="display:none;"></div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    &copy; 2025 Grime to Prime BBQ Cleaning Co. &mdash;
+    <a href="tel:7605054269">(760) 505-4269</a> &mdash;
+    <a href="mailto:grimetoprime12@gmail.com">grimetoprime12@gmail.com</a>
+  </footer>
+
+  <script>
+    const form = document.getElementById('bookingForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      // If the Formspree ID hasn't been set yet, warn in console but still attempt
+      const action = form.action;
+      if (action.includes('YOUR_FORM_ID')) {
+        alert('⚠️ Setup needed: Replace YOUR_FORM_ID in booking.html with your Formspree form ID.\n\nSteps:\n1. Go to formspree.io\n2. Sign up free\n3. Create a new form (email: grimetoprime12@gmail.com)\n4. Copy your form ID and replace YOUR_FORM_ID in the form action URL.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      try {
+        const response = await fetch(action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.style.display = 'none';
+          successMsg.style.display = 'block';
+        } else {
+          const data = await response.json();
+          const msg = data.errors ? data.errors.map(e => e.message).join(', ') : 'Something went wrong. Please try again.';
+          alert('Error: ' + msg);
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit';
+        }
+      } catch (err) {
+        alert('Network error. Please check your connection and try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit';
+      }
+    });
+  </script>
+
+</body>
+</html>

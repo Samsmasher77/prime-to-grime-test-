@@ -46,9 +46,16 @@
 - **Spacing:** Use intentional, consistent spacing tokens — not random Tailwind steps.
 - **Depth:** Surfaces should have a layering system (base → elevated → floating), not all sit at the same z-plane.
 
+## Deployment Workflow
+- **Local-first always** — all development and testing happens on localhost (`http://localhost:3000` via `node serve.mjs`). Never commit or push until the user explicitly approves.
+- **Never push to GitHub unprompted** — only commit and push when the user explicitly says to (e.g. "push it", "put it on GitHub", "deploy it").
+- **Deployment chain** — once the user approves: commit to `main` branch on GitHub, which Vercel picks up automatically via its GitHub integration and deploys to production.
+- **No partial pushes** — never push broken or un-reviewed code. Everything must pass the localhost review first.
+
 ## Hard Rules
 - Do not add sections, features, or content not in the reference
 - Do not "improve" a reference design — match it
 - Do not stop after one screenshot pass
 - Do not use `transition-all`
 - Do not use default Tailwind blue/indigo as primary color
+- Do not commit or push to GitHub unless the user explicitly says to

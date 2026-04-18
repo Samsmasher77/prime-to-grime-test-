@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <style>
     :root {
       --red: #B22222;
@@ -172,7 +174,7 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background-image: url('brand_assests/IMG_1059.JPG');
+      background-image: url('brand_assests/background.jpg');
       background-size: cover;
       background-position: center 30%;
       opacity: 0.45;
@@ -1045,6 +1047,269 @@
       .nl-float { width: calc(100vw - 32px); right: 16px; bottom: 16px; }
       .nl-row { grid-template-columns: 1fr; }
     }
+
+    /* ── BBQ EXPLODEX ─────────────────────────────────────────── */
+    .explodex-section {
+      background: var(--charcoal);
+      padding: 80px 40px;
+    }
+    .explodex-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 580px;
+      margin: 8px auto 40px;
+      line-height: 1.65;
+    }
+    .explodex-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+    .explodex-canvas-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: #0d0d0d;
+    }
+    #bbq-canvas {
+      display: block;
+      width: 100%;
+      height: 520px;
+      cursor: grab;
+    }
+    #bbq-canvas:active { cursor: grabbing; }
+    .explodex-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--muted);
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .explodex-loading-bar {
+      width: 120px;
+      height: 2px;
+      background: #2a2a2a;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .explodex-loading-fill {
+      height: 100%;
+      background: var(--red);
+      animation: loadpulse 1.2s ease-in-out infinite;
+    }
+    @keyframes loadpulse {
+      0%   { width: 0%; }
+      50%  { width: 80%; }
+      100% { width: 100%; }
+    }
+    .explodex-panel {
+      background: var(--grill);
+      border-radius: 8px;
+      border-top: 3px solid var(--red);
+      padding: 24px;
+    }
+    .explodex-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .explodex-parts-list {
+      background: var(--grill);
+      border-radius: 8px;
+      border-top: 3px solid var(--flame);
+      padding: 18px 18px 14px;
+    }
+    .explodex-parts-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .explodex-parts-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--flame);
+      font-weight: 600;
+    }
+    .explodex-parts-count {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+    }
+    .explodex-parts-items {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .explodex-parts-items::-webkit-scrollbar { width: 6px; }
+    .explodex-parts-items::-webkit-scrollbar-track { background: transparent; }
+    .explodex-parts-items::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+    .explodex-parts-items::-webkit-scrollbar-thumb:hover { background: rgba(178,34,34,0.45); }
+    .explodex-parts-loading {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 8px 4px;
+      letter-spacing: 0.5px;
+    }
+    .explodex-part-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--cream);
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 9px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+    }
+    .explodex-part-btn:hover {
+      background: rgba(178, 34, 34, 0.12);
+      border-color: rgba(178, 34, 34, 0.40);
+      transform: translateX(2px);
+    }
+    .explodex-part-btn:focus-visible {
+      outline: 2px solid var(--flame);
+      outline-offset: 2px;
+    }
+    .explodex-part-btn:active {
+      transform: translateX(2px) scale(0.99);
+    }
+    .explodex-part-btn .part-index {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      opacity: 0.8;
+    }
+    .explodex-part-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--cream);
+      transform: translateX(2px);
+    }
+    .explodex-part-btn.active .part-index {
+      color: rgba(255, 240, 230, 0.85);
+    }
+    .explodex-parts-hint {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.7;
+      text-align: center;
+    }
+    .explodex-info-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--flame);
+      margin-bottom: 8px;
+    }
+    .explodex-info-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cream);
+      margin: 0 0 16px;
+      line-height: 1.1;
+    }
+    .explodex-freq-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .explodex-freq-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .explodex-freq-badge {
+      background: var(--red);
+      color: var(--cream);
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+    .explodex-info-tip {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+      margin: 0 0 20px;
+    }
+    .explodex-cta-hint {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 16px;
+      text-transform: uppercase;
+    }
+    .explodex-controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .explodex-hint {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+    #bbq-explode-btn {
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    @media (max-width: 820px) {
+      .explodex-layout { grid-template-columns: 1fr; }
+      #bbq-canvas { height: 320px; }
+      .explodex-section { padding: 56px 20px; }
+    }
   </style>
 </head>
 <body>
@@ -1065,10 +1330,11 @@
       <li><a href="#area">Service Area</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="#explodex">Grill Guide</a></li>
     </ul>
     <div class="nav-right">
       <a href="tel:7605054269" class="nav-phone">📞 (760) 505-4269</a>
-      <a href="#contact" class="btn-red">Book Now</a>
+      <a href="booking.html" class="btn-red">Book Now</a>
     </div>
   </nav>
 
@@ -1087,7 +1353,7 @@
         <span>Serving All of North County San Diego</span>
       </div>
       <div class="hero-ctas">
-        <a href="#contact" class="btn-red" style="font-size:15px; padding:15px 40px; letter-spacing:2.5px;">Book a Clean</a>
+        <a href="booking.html" class="btn-red" style="font-size:15px; padding:15px 40px; letter-spacing:2.5px;">Book a Clean</a>
         <a href="#results" class="btn-outline" style="font-size:15px; padding:15px 40px;">See Our Results</a>
       </div>
     </div>
@@ -1248,6 +1514,64 @@
     </div>
   </section>
 
+  <!-- BBQ EXPLODEX ─────────────────────────────────────────────────────────── -->
+  <section id="explodex" class="explodex-section">
+    <div class="container">
+      <div class="section-eyebrow" style="text-align:center; margin-bottom:12px;">Interactive Guide</div>
+      <h2 class="section-title" style="text-align:center; margin-bottom:8px;">
+        Know Your <span class="accent">Grill</span>
+      </h2>
+      <p class="explodex-sub">Click any part to see how often it needs cleaning. Drag to rotate.</p>
+
+      <div class="explodex-layout">
+        <!-- 3D Canvas -->
+        <div class="explodex-canvas-wrap">
+          <canvas id="bbq-canvas"></canvas>
+          <div class="explodex-loading" id="bbq-loading">
+            <span>Loading Model</span>
+            <div class="explodex-loading-bar"><div class="explodex-loading-fill"></div></div>
+          </div>
+        </div>
+
+        <!-- Sidebar: Selected Detail + Parts List -->
+        <div class="explodex-sidebar">
+
+          <!-- Info Panel (shown when a part is selected) -->
+          <div id="bbq-info" class="explodex-panel" style="display:none;">
+            <div class="explodex-info-eyebrow">Selected Part</div>
+            <h3 id="bbq-info-name" class="explodex-info-name"></h3>
+            <div class="explodex-freq-row">
+              <span class="explodex-freq-label">Clean</span>
+              <span id="bbq-info-freq" class="explodex-freq-badge"></span>
+            </div>
+            <p id="bbq-info-tip" class="explodex-info-tip"></p>
+            <div class="explodex-cta-hint">Need a deep clean? &nbsp;<a href="#contact" style="color:var(--flame); text-decoration:none;">Book us &rarr;</a></div>
+          </div>
+
+          <!-- Parts List (always visible) -->
+          <div id="bbq-parts-list" class="explodex-parts-list">
+            <div class="explodex-parts-header">
+              <span class="explodex-parts-title">All Parts</span>
+              <span class="explodex-parts-count" id="bbq-parts-count">—</span>
+            </div>
+            <div class="explodex-parts-items" id="bbq-parts-items">
+              <div class="explodex-parts-loading">Loading parts…</div>
+            </div>
+            <div class="explodex-parts-hint">Click a part — or click directly on the grill</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="explodex-controls">
+        <button id="bbq-explode-btn" class="btn-red">Explode View</button>
+        <button id="bbq-reset-btn" class="btn-outline">Reset</button>
+      </div>
+      <p class="explodex-hint">Drag to rotate &nbsp;&middot;&nbsp; Scroll to zoom &nbsp;&middot;&nbsp; Click a part to inspect &nbsp;&middot;&nbsp; Explode to see inside</p>
+    </div>
+  </section>
+
   <!-- SERVICE AREA -->
   <section class="reviews" id="area" style="background: var(--grill);">
     <div class="container">
@@ -1313,7 +1637,7 @@
             <li>Igniter check</li>
             <li>Exterior wipe-down</li>
           </ul>
-          <a href="#contact" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
+          <a href="booking.html" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
         </div>
 
         <div class="price-card featured">
@@ -1331,7 +1655,7 @@
             <li>Deep grate restoration</li>
             <li>Post-clean seasoning</li>
           </ul>
-          <a href="#contact" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
+          <a href="booking.html" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
         </div>
 
         <div class="price-card">
@@ -1348,7 +1672,7 @@
             <li>Full sanitization treatment</li>
             <li>Health code compliance ready</li>
           </ul>
-          <a href="#contact" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
+          <a href="booking.html" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
         </div>
 
         <div class="price-card" style="border-top: 3px solid var(--flame);">
@@ -1376,7 +1700,7 @@
             <li>Temperature calibration check</li>
             <li>Post-clean seasoning</li>
           </ul>
-          <a href="#contact" class="btn-red" style="width:100%; text-align:center; background:var(--flame); border-color:var(--flame); color:#111;">Book + Bundle</a>
+          <a href="booking.html" class="btn-red" style="width:100%; text-align:center; background:var(--flame); border-color:var(--flame); color:#111;">Book + Bundle</a>
         </div>
 
       </div>
@@ -1409,6 +1733,11 @@
       <div id="nl-form-wrap">
         <p class="nl-float-desc">Seasonal promotions &amp; grill care tips for North County San Diego homeowners. No spam, ever.</p>
         <form id="nl-form" novalidate>
+          <!-- Honeypot: hidden from humans, bots fill it in → server rejects -->
+          <div style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true">
+            <label for="nl-website">Website (leave blank)</label>
+            <input type="text" id="nl-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
           <div class="nl-row">
             <div class="nl-field">
               <label class="nl-label" for="nl-first">First Name</label>
@@ -1624,6 +1953,7 @@
         const first = document.getElementById('nl-first').value.trim();
         const last  = document.getElementById('nl-last').value.trim();
         const email = document.getElementById('nl-email').value.trim();
+        const honey = document.getElementById('nl-website').value;
         const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
         showErr('nl-first', 'nl-first-err', !first);
@@ -1642,7 +1972,7 @@
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ firstName: first, lastName: last, email: email })
+          body: JSON.stringify({ firstName: first, lastName: last, email: email, website: honey })
         })
         .then(function() {
           document.getElementById('nl-form-wrap').style.display = 'none';
@@ -1661,6 +1991,1090 @@
           if (errEl) errEl.style.display = 'none';
         });
       });
+    })();
+
+    (function initExplodex() {
+      if (!window.THREE || !THREE.GLTFLoader) { console.warn('Three.js / GLTFLoader not loaded'); return; }
+
+      var canvas      = document.getElementById('bbq-canvas');
+      var loadingEl   = document.getElementById('bbq-loading');
+      var infoPanel   = document.getElementById('bbq-info');
+      var infoName    = document.getElementById('bbq-info-name');
+      var infoFreq    = document.getElementById('bbq-info-freq');
+      var infoTip     = document.getElementById('bbq-info-tip');
+      var explodeBtn  = document.getElementById('bbq-explode-btn');
+      var resetBtn    = document.getElementById('bbq-reset-btn');
+      var partsItemsEl = document.getElementById('bbq-parts-items');
+      var partsCountEl = document.getElementById('bbq-parts-count');
+      if (!canvas) return;
+
+      // ── Renderer ──────────────────────────────────────────────────────────
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x0d0d0d, 1);
+      renderer.physicallyCorrectLights = true;
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.1;
+
+      // ── Camera ────────────────────────────────────────────────────────────
+      var theta = 0.55, phi = 1.15, CAM_R = 18;
+      var thetaTarget = 0.55, phiTarget = 1.15, camRTarget = 18, camRBase = 18;
+      var CAM_TARGET = new THREE.Vector3(0, 0, 0);
+      var camTargetGoal = new THREE.Vector3(0, 0, 0);
+      var camTargetBase = new THREE.Vector3(0, 0, 0);
+      var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 200);
+      function updateCamera() {
+        camera.position.set(
+          CAM_TARGET.x + CAM_R * Math.sin(phi) * Math.sin(theta),
+          CAM_TARGET.y + CAM_R * Math.cos(phi),
+          CAM_TARGET.z + CAM_R * Math.sin(phi) * Math.cos(theta)
+        );
+        camera.lookAt(CAM_TARGET);
+      }
+      updateCamera();
+
+      // ── Scene & lights ────────────────────────────────────────────────────
+      var scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0x0d0d0d, 35, 90);
+      scene.add(new THREE.AmbientLight(0xfff0e0, 0.9));
+
+      var key = new THREE.DirectionalLight(0xfff5e0, 2.2);
+      key.position.set(5, 10, 6);
+      scene.add(key);
+
+      var fill = new THREE.DirectionalLight(0xffe0c0, 1.1);
+      fill.position.set(-4, 5, 7);
+      scene.add(fill);
+
+      var back = new THREE.DirectionalLight(0x6688aa, 0.5);
+      back.position.set(-5, 2, -6);
+      scene.add(back);
+
+      var flameLight = new THREE.PointLight(0xE8872A, 2.5, 20);
+      flameLight.position.set(0, -2, 0);
+      scene.add(flameLight);
+
+      // ── Part data ─────────────────────────────────────────────────────────
+      var PART_INFO = [
+        { keys: ['lid','hood','cover','top','dome','cap'],
+          name: 'Grill Lid', freq: 'Every 5 uses',
+          tip: 'Wipe the interior with a damp cloth to remove smoke residue and carbon buildup. Never use oven cleaner — it damages the porcelain enamel and causes peeling and rust.',
+          color: 0x2a2a2a, roughness: 0.6, metalness: 0.45 },
+        { keys: ['body','firebox','box','main','shell','chamber','hull'],
+          name: 'Firebox Body', freq: 'Every 3 months',
+          tip: 'Scrape accumulated ash and grease from the interior walls. A clean firebox prevents corrosion, ensures even heat distribution, and eliminates dangerous hot spots.',
+          color: 0x1e1e1e, roughness: 0.7, metalness: 0.5 },
+        { keys: ['grate','grid','cooking','rack','grille'],
+          name: 'Cooking Grates', freq: 'After every use',
+          tip: 'Preheat on high for 10 minutes then brush with a stiff grill brush. Monthly: soak in hot soapy water. Well-seasoned grates are naturally non-stick and rust-resistant.',
+          color: 0x4a4a4a, roughness: 0.35, metalness: 0.8 },
+        { keys: ['burner','tube','flame','pipe'],
+          name: 'Burners', freq: 'Every 6 months',
+          tip: 'Remove and inspect burner tubes for clogs, spider webs, and corrosion. Blocked burners cause uneven heat and dangerous flare-ups.',
+          color: 0x888888, roughness: 0.25, metalness: 0.85 },
+        { keys: ['drip','tray','pan','catch','drawer'],
+          name: 'Drip Tray', freq: 'Every 2–3 uses',
+          tip: 'Empty and wipe after every 2-3 cooks. A full drip tray is the #1 cause of grease fires. Line with heavy-duty aluminum foil for easier cleanup.',
+          color: 0x383838, roughness: 0.5, metalness: 0.55 },
+        { keys: ['shelf','table','side','wing','flap'],
+          name: 'Side Shelves', freq: 'After every use',
+          tip: 'Wipe with warm soapy water after each cookout. Food residue attracts insects overnight. Dry thoroughly to prevent rust on the hinges.',
+          color: 0x303030, roughness: 0.6, metalness: 0.4 },
+        { keys: ['leg','frame','cart','stand','wheel','base','foot'],
+          name: 'Cart & Frame', freq: 'Monthly',
+          tip: 'Wipe down legs monthly. Check for rust spots and treat early with rust converter. Clean wheels and adjust leveling feet each season.',
+          color: 0x181818, roughness: 0.7, metalness: 0.5 },
+        { keys: ['flavor','vaporiz','deflect','heat'],
+          name: 'Flavorizer Bars', freq: 'Every 3–5 uses',
+          tip: 'Scrape off grease deposits with a putty knife. Baked-on grease causes flare-ups and bitter smoke.',
+          color: 0x3a3a3a, roughness: 0.45, metalness: 0.65 },
+        { keys: ['handle','knob','control','dial','grip'],
+          name: 'Handles & Controls', freq: 'After every use',
+          tip: 'Wipe handles with degreaser to prevent grease transfer. Check knob seals yearly for gas safety. Replace cracked plastic handles immediately.',
+          color: 0x111111, roughness: 0.85, metalness: 0.1 },
+      ];
+
+      var FALLBACK_COLORS = [0x2a2a2a,0x1e1e1e,0x3a3a3a,0x4a4a4a,0x222222,0x303030,0x383838,0x181818];
+      var FALLBACK_INFO = {
+        name: 'Grill Component', freq: 'Every 3 months',
+        tip: 'Regular cleaning of all grill components extends the life of your BBQ and ensures safe, flavorful cooking. Contact us for a professional deep clean.',
+        roughness: 0.6, metalness: 0.5
+      };
+
+      function matchPart(meshName) {
+        var n = (meshName || '').toLowerCase();
+        for (var i = 0; i < PART_INFO.length; i++) {
+          for (var j = 0; j < PART_INFO[i].keys.length; j++) {
+            if (n.indexOf(PART_INFO[i].keys[j]) !== -1) return PART_INFO[i];
+          }
+        }
+        return null;
+      }
+
+      function makeMat(info) {
+        return new THREE.MeshStandardMaterial({
+          color: info.color,
+          roughness: info.roughness,
+          metalness: info.metalness,
+          emissive: new THREE.Color(0x000000),
+          emissiveIntensity: 0
+        });
+      }
+
+      // ── State ─────────────────────────────────────────────────────────────
+      var parts = [];          // { obj, info, basePos, targetPos, explodeDir }
+      var raycastMeshes = [];
+      var selectedIdx = null;
+      var isExploded = false;
+
+      // ── Interactive part groups (clickable + explode) ─────────────────────
+      // explodeDir: normalized direction the group moves during explode
+      // explodeDist: how far it travels (overrides global EXPLODE_DIST)
+      var PART_GROUPS = [
+        {
+          name: 'Grill Lid', freq: 'Every 5 uses',
+          tip: 'Wipe the interior with a damp cloth to remove smoke residue. Never use oven cleaner — it destroys the porcelain enamel coating, causing peeling and rust.',
+          prefixes: ['Lid_', 'Therm_'],   // thermometer rides with the lid
+          explodeDir: [0, 1, 0],          // straight up, out of frame
+          explodeDist: 9,
+          meshMats: {
+            'Lid_H_':       { color: 0xbbbbbb, roughness: 0.15, metalness: 0.95 },
+            'Lid_Handle':   { color: 0xbbbbbb, roughness: 0.15, metalness: 0.95 },
+            'Therm_Face':   { color: 0xf0f0e8, roughness: 0.90, metalness: 0.00 },
+            'Therm_Glass':  { color: 0x88aacc, roughness: 0.05, metalness: 0.20 },
+            'Therm_Needle': { color: 0xcc2222, roughness: 0.50, metalness: 0.30 },
+            'Therm_Bezel':  { color: 0xaaaaaa, roughness: 0.20, metalness: 0.85 },
+            'Therm_Step':   { color: 0xaaaaaa, roughness: 0.20, metalness: 0.85 },
+            'Therm_':       { color: 0x555555, roughness: 0.50, metalness: 0.60 },
+            'DEFAULT':      { color: 0x1a1a1a, roughness: 0.70, metalness: 0.45 }
+          }
+        },
+        {
+          name: 'Cooking Grates', freq: 'After every use',
+          tip: 'Preheat on high for 10 min, then brush vigorously. Monthly: soak in hot soapy water and scrub. Well-seasoned grates are naturally non-stick and resist rust.',
+          prefixes: ['Grate_'],
+          explodeDir: [0, 1, 0],         // up — topmost internal layer
+          explodeDist: 4,
+          meshMats: {
+            'Grate_Handle': { color: 0xaaaaaa, roughness: 0.15, metalness: 0.92 },
+            'DEFAULT':      { color: 0x404040, roughness: 0.38, metalness: 0.82 }
+          }
+        },
+        {
+          name: 'Flavorizer Bars', freq: 'Every 3–5 uses',
+          tip: 'Remove and scrape with a putty knife after every few cooks. Baked-on grease vaporizes and causes bitter smoke and dangerous flare-ups that can burn your food.',
+          prefixes: ['Flavorizer_'],
+          explodeDir: [0, 0.3, 0],       // slight up — middle layer
+          explodeDist: 2,
+          mat: { color: 0x2a2a2a, roughness: 0.55, metalness: 0.65 }
+        },
+        {
+          name: 'Burners', freq: 'Every 6 months',
+          tip: 'Remove and inspect tubes for spider webs, clogs, and corrosion. Clean ports with a stiff wire. Blocked burners create dangerous hot/cold spots and gas build-up.',
+          prefixes: ['Burner_'],
+          explodeDir: [0, -0.4, 0],      // slight down — below flavorizers
+          explodeDist: 2,
+          meshMats: {
+            '_Tube':    { color: 0x999999, roughness: 0.22, metalness: 0.88 },
+            '_Venturi': { color: 0x888888, roughness: 0.25, metalness: 0.82 },
+            '_Orifice': { color: 0xcccccc, roughness: 0.12, metalness: 0.95 },
+            '_Brkt':    { color: 0x777777, roughness: 0.30, metalness: 0.75 },
+            '_Ports':   { color: 0xaaaaaa, roughness: 0.18, metalness: 0.90 },
+            'DEFAULT':  { color: 0x999999, roughness: 0.22, metalness: 0.88 }
+          }
+        },
+        {
+          name: 'Drip Tray', freq: 'Every 2–3 uses',
+          tip: 'Empty and wipe after every 2-3 cooks. A full drip tray is the #1 cause of grease fires. Line with heavy-duty aluminum foil to make cleanup a 30-second job.',
+          prefixes: ['DT_'],
+          explodeDir: [0, -1, 0],        // straight down, out of frame
+          explodeDist: 7,
+          meshMats: {
+            'DT_H_':   { color: 0x777777, roughness: 0.30, metalness: 0.80 },
+            'DEFAULT': { color: 0x999999, roughness: 0.20, metalness: 0.88 }
+          }
+        },
+      ];
+
+      // ── Static meshes (visible but not interactive or exploding) ──────────
+      var STATIC_MATS = [];  // Knob_ handled in custom firebox block below
+
+      function getMeshMat(mesh, groupDef) {
+        if (!groupDef.meshMats) return groupDef.mat;
+        var n = mesh.name;
+        var keys = Object.keys(groupDef.meshMats);
+        for (var k = 0; k < keys.length; k++) {
+          if (keys[k] !== 'DEFAULT' && n.indexOf(keys[k]) !== -1) {
+            return groupDef.meshMats[keys[k]];
+          }
+        }
+        return groupDef.meshMats['DEFAULT'] || groupDef.mat || { color: 0x333333, roughness: 0.6, metalness: 0.5 };
+      }
+
+      // ── GLB Load ──────────────────────────────────────────────────────────
+      var loader = new THREE.GLTFLoader();
+      loader.load('brand_assests/Untitled.glb', function(gltf) {
+        if (loadingEl) loadingEl.style.display = 'none';
+
+        var model = gltf.scene;
+        // Flip model 180° so the front face (knobs side) faces the camera
+        model.rotation.y = Math.PI;
+
+        // Collect all meshes from model
+        var allMeshes = [];
+        model.traverse(function(c) { if (c.isMesh) allMeshes.push(c); });
+
+        // Auto-scale: compute bounds from all meshes
+        var box = new THREE.Box3().setFromObject(model);
+        var size = box.getSize(new THREE.Vector3());
+        var maxDim = Math.max(size.x, size.y, size.z);
+        var scale = 12 / maxDim;
+        model.scale.setScalar(scale);
+
+        // Re-compute after scaling and center
+        box.setFromObject(model);
+        var center = box.getCenter(new THREE.Vector3());
+        model.position.sub(center);
+        // Raise slightly so grill sits centered vertically
+        box.setFromObject(model);
+        model.position.y -= box.min.y * 0.5;
+
+        scene.add(model);
+
+        // World center for camera
+        box.setFromObject(model);
+        var worldCenter = box.getCenter(new THREE.Vector3());
+        CAM_TARGET.copy(worldCenter);
+        CAM_R = Math.max(box.max.x - box.min.x, box.max.z - box.min.z) * 1.8;
+        camRBase = CAM_R; camRTarget = CAM_R; thetaTarget = theta; phiTarget = phi;
+        camTargetBase.copy(CAM_TARGET); camTargetGoal.copy(CAM_TARGET);
+        updateCamera();
+
+        // Apply static materials to non-interactive meshes
+        STATIC_MATS.forEach(function(staticDef) {
+          allMeshes.forEach(function(mesh) {
+            var n = mesh.name;
+            var belongs = staticDef.prefixes.some(function(p) { return n.indexOf(p) === 0; });
+            if (!belongs) return;
+            var matDef;
+            if (staticDef.meshMats) {
+              var keys = Object.keys(staticDef.meshMats);
+              matDef = staticDef.meshMats['DEFAULT'] || { color: 0x333333, roughness: 0.6, metalness: 0.5 };
+              for (var k = 0; k < keys.length; k++) {
+                if (keys[k] !== 'DEFAULT' && n.indexOf(keys[k]) !== -1) { matDef = staticDef.meshMats[keys[k]]; break; }
+              }
+            } else {
+              matDef = staticDef.mat;
+            }
+            mesh.material = new THREE.MeshStandardMaterial({
+              color: matDef.color, roughness: matDef.roughness, metalness: matDef.metalness,
+              emissive: new THREE.Color(0x000000), emissiveIntensity: 0
+            });
+          });
+        });
+
+        // Build interactive part groups from PART_GROUPS definitions
+        PART_GROUPS.forEach(function(groupDef) {
+          var group = new THREE.Group();
+          group.name = groupDef.name;
+          var meshesForGroup = [];
+
+          allMeshes.forEach(function(mesh) {
+            var n = mesh.name;
+            var belongs = groupDef.prefixes.some(function(prefix) {
+              return n.indexOf(prefix) === 0;
+            });
+            if (belongs) meshesForGroup.push(mesh);
+          });
+
+          if (!meshesForGroup.length) return;
+
+          // Compute group world center before reparenting
+          var groupBox = new THREE.Box3();
+          meshesForGroup.forEach(function(m) { groupBox.expandByObject(m); });
+          var groupWorldCenter = groupBox.getCenter(new THREE.Vector3());
+
+          // Reparent meshes into the group
+          meshesForGroup.forEach(function(mesh) {
+            // Apply material
+            var matDef = getMeshMat(mesh, groupDef);
+            mesh.material = new THREE.MeshStandardMaterial({
+              color: matDef.color,
+              roughness: matDef.roughness,
+              metalness: matDef.metalness,
+              emissive: new THREE.Color(0x000000),
+              emissiveIntensity: 0
+            });
+            mesh.userData.partIdx = parts.length;
+            raycastMeshes.push(mesh);
+          });
+
+          // Explode direction: use explicit if defined, else compute from center
+          var dir;
+          if (groupDef.explodeDir) {
+            dir = new THREE.Vector3(groupDef.explodeDir[0], groupDef.explodeDir[1], groupDef.explodeDir[2]).normalize();
+          } else {
+            dir = groupWorldCenter.clone().sub(worldCenter);
+            if (dir.length() < 0.01) dir.set(0, 1, 0);
+            dir.normalize();
+          }
+
+          // Use the model itself to hold meshes; track via group object3d
+          // Store a representative Object3D to lerp (use model as container, track per-mesh)
+          // Simple approach: create dummy group at world center for lerping
+          group.position.copy(new THREE.Vector3(0, 0, 0));
+          scene.add(group);
+
+          // Reparent meshes into group preserving world transform
+          meshesForGroup.forEach(function(mesh) {
+            group.attach(mesh); // preserves world position/rotation/scale
+          });
+
+          // Fix orientation & scale for parts that need it
+          var basePos = new THREE.Vector3(0, 0, 0);
+          if (groupDef.name === 'Burners' || groupDef.name === 'Flavorizer Bars') {
+            // Pivot rotation/scale around the group's own centroid so shrinking
+            // pulls all edges inward uniformly (no lateral drift that pokes through walls)
+            var spreadFactor = 2.2;
+            meshesForGroup.forEach(function(m) {
+              m.position.sub(groupWorldCenter);
+              m.userData.localBase = m.position.clone();
+              m.userData.localExplode = m.position.clone().multiplyScalar(spreadFactor);
+              m.userData.localTarget = m.position.clone();
+            });
+            group.position.copy(groupWorldCenter);
+            basePos.copy(groupWorldCenter);
+            group.rotation.y += Math.PI / 2;
+            group.scale.setScalar(0.42);
+          }
+
+          parts.push({
+            obj: group,
+            meshes: meshesForGroup,
+            info: groupDef,
+            explodeDir: dir,
+            basePos: basePos,
+            targetPos: basePos.clone()
+          });
+        });
+
+        // ── Custom Firebox: directional panel explosion + knobs + no top ──────
+        var fbRawMeshes = [], knobRawMeshes = [];
+        allMeshes.forEach(function(mesh) {
+          var n = mesh.name;
+          if (n.indexOf('Firebox') === 0) fbRawMeshes.push(mesh);
+          else if (n.indexOf('Knob_') === 0) knobRawMeshes.push(mesh);
+        });
+
+        if (fbRawMeshes.length) {
+          // Compute firebox world bounds
+          var fbBox = new THREE.Box3();
+          fbRawMeshes.forEach(function(m) { fbBox.expandByObject(m); });
+          var fbCenter = fbBox.getCenter(new THREE.Vector3());
+          var fbSize   = fbBox.getSize(new THREE.Vector3());
+          var W = fbSize.x, H = fbSize.y, D = fbSize.z;
+          var T = Math.min(W, H, D) * 0.10; // wall thickness
+
+          // Hide the original solid firebox mesh(es)
+          fbRawMeshes.forEach(function(m) { m.visible = false; });
+
+          renderer.localClippingEnabled = true;
+
+          function makeFbMat() {
+            return new THREE.MeshStandardMaterial({
+              color: 0x2a2a2a, roughness: 0.28, metalness: 0.82,
+              emissive: new THREE.Color(0x000000), emissiveIntensity: 0,
+              side: THREE.DoubleSide
+            });
+          }
+          function makeKnobMat(meshName) {
+            var n = meshName || '';
+            if (n.indexOf('_Shaft') !== -1)     return new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.20, metalness: 0.85, emissive: new THREE.Color(0), emissiveIntensity: 0 });
+            if (n.indexOf('_Indicator') !== -1) return new THREE.MeshStandardMaterial({ color: 0xcc3300, roughness: 0.40, metalness: 0.30, emissive: new THREE.Color(0), emissiveIntensity: 0 });
+            return new THREE.MeshStandardMaterial({ color: 0x0d0d0d, roughness: 0.88, metalness: 0.05, emissive: new THREE.Color(0), emissiveIntensity: 0 });
+          }
+
+          // 5 panels: front, back, left, right, bottom  (NO top)
+          var panelDefs = [
+            { side: 'front',  geoArgs: [W, H, T],   pos: new THREE.Vector3(fbCenter.x, fbCenter.y, fbBox.max.z - T/2), dir: new THREE.Vector3(0, 0, 1),  dist: 9 },
+            { side: 'back',   geoArgs: [W, H, T],   pos: new THREE.Vector3(fbCenter.x, fbCenter.y, fbBox.min.z + T/2), dir: new THREE.Vector3(0, 0,-1),  dist: 9 },
+            { side: 'left',   geoArgs: [T, H, D],   pos: new THREE.Vector3(fbBox.min.x + T/2, fbCenter.y, fbCenter.z), dir: new THREE.Vector3(-1, 0, 0), dist: 9 },
+            { side: 'right',  geoArgs: [T, H, D],   pos: new THREE.Vector3(fbBox.max.x - T/2, fbCenter.y, fbCenter.z), dir: new THREE.Vector3(1, 0, 0),  dist: 9 },
+          ];
+
+          var fbInfo = {
+            name: 'Firebox Body', freq: 'Every 3 months',
+            tip: 'Scrape ash and grease from interior walls. A clean firebox prevents corrosion and ensures even heat distribution — quarterly cleaning can double your grill\'s lifespan.'
+          };
+
+          var assignedKnobs = new Set();
+
+          panelDefs.forEach(function(pd) {
+            var group = new THREE.Group();
+            group.name = 'Firebox_' + pd.side;
+            scene.add(group);
+
+            // Synthetic panel mesh
+            var geo = new THREE.BoxGeometry(pd.geoArgs[0], pd.geoArgs[1], pd.geoArgs[2]);
+            var panelMesh = new THREE.Mesh(geo, makeFbMat());
+            panelMesh.position.copy(pd.pos);
+            panelMesh.name = 'Firebox_Panel_' + pd.side;
+            var partIdx = parts.length;
+            panelMesh.userData.partIdx = partIdx;
+            group.add(panelMesh);
+            raycastMeshes.push(panelMesh);
+            var groupMeshes = [panelMesh];
+
+            // Assign knobs to the nearest panel
+            if (pd.side !== 'bottom') {
+              knobRawMeshes.forEach(function(km) {
+                if (assignedKnobs.has(km)) return;
+                var kBox = new THREE.Box3().setFromObject(km);
+                var kC   = kBox.getCenter(new THREE.Vector3());
+                var dx = kC.x - fbCenter.x, dz = kC.z - fbCenter.z;
+                var adx = Math.abs(dx), adz = Math.abs(dz);
+                var closest;
+                if (adx > adz) closest = dx > 0 ? 'right' : 'left';
+                else            closest = dz > 0 ? 'front' : 'back';
+                if (closest !== pd.side) return;
+                assignedKnobs.add(km);
+                km.material = makeKnobMat(km.name);
+                km.userData.partIdx = partIdx;
+                raycastMeshes.push(km);
+                group.attach(km);
+                groupMeshes.push(km);
+              });
+            }
+
+            parts.push({
+              obj: group,
+              meshes: groupMeshes,
+              info: Object.assign({}, fbInfo, { explodeDist: pd.dist }),
+              explodeDir: pd.dir,
+              basePos: new THREE.Vector3(0, 0, 0),
+              targetPos: new THREE.Vector3(0, 0, 0)
+            });
+          });
+        }
+        // ── End custom firebox ────────────────────────────────────────────────
+
+        // Build the clickable parts list now that `parts` is fully populated
+        populatePartsList();
+
+      }, undefined, function(err) {
+        console.error('GLB load error:', err);
+        if (loadingEl) loadingEl.textContent = 'Failed to load model';
+      });
+
+      // ── Highlight ─────────────────────────────────────────────────────────
+      function setHighlight(idx, on) {
+        parts[idx].meshes.forEach(function(m) {
+          m.material.emissive.setHex(on ? 0xB22222 : 0x000000);
+          m.material.emissiveIntensity = on ? 0.4 : 0;
+        });
+      }
+
+      function setFireboxVisible(on) {
+        parts.forEach(function(p) {
+          if (p.info && p.info.name === 'Firebox Body') {
+            p.meshes.forEach(function(m) { m.visible = on; });
+          }
+        });
+      }
+
+      function updateListActive() {
+        if (!partsItemsEl) return;
+        var selectedName = (selectedIdx !== null && parts[selectedIdx] && parts[selectedIdx].info)
+          ? parts[selectedIdx].info.name : null;
+        var btns = partsItemsEl.querySelectorAll('.explodex-part-btn');
+        btns.forEach(function(b) {
+          b.classList.toggle('active', !!selectedName && b.getAttribute('data-part-name') === selectedName);
+        });
+      }
+
+      var HIDDEN_PART_NAMES = { 'Firebox Body': true };
+
+      function populatePartsList() {
+        if (!partsItemsEl) return;
+        var seen = {};
+        var entries = [];
+        parts.forEach(function(p, i) {
+          var nm = p.info && p.info.name;
+          if (!nm || seen[nm] !== undefined) return;
+          if (HIDDEN_PART_NAMES[nm]) return;
+          seen[nm] = i;
+          entries.push({ idx: i, name: nm });
+        });
+        if (partsCountEl) partsCountEl.textContent = entries.length;
+        partsItemsEl.innerHTML = '';
+        entries.forEach(function(e, n) {
+          var btn = document.createElement('button');
+          btn.className = 'explodex-part-btn';
+          btn.setAttribute('data-part-idx', e.idx);
+          btn.setAttribute('data-part-name', e.name);
+          btn.type = 'button';
+          var num = String(n + 1).padStart(2, '0');
+          var nameEl = document.createElement('span');
+          nameEl.className = 'part-name';
+          nameEl.textContent = e.name;
+          var idxEl = document.createElement('span');
+          idxEl.className = 'part-index';
+          idxEl.textContent = num;
+          btn.appendChild(nameEl);
+          btn.appendChild(idxEl);
+          btn.addEventListener('click', function() { selectPart(e.idx); });
+          partsItemsEl.appendChild(btn);
+        });
+      }
+
+      function selectPart(idx) {
+        if (selectedIdx === idx) {
+          setHighlight(idx, false);
+          selectedIdx = null;
+          infoPanel.style.display = 'none';
+          updateListActive();
+          setFireboxVisible(true);
+          // Zoom back out to base view
+          camRTarget = camRBase;
+          thetaTarget = 0.55; phiTarget = 1.15;
+          camTargetGoal.copy(camTargetBase);
+          return;
+        }
+        if (selectedIdx !== null) setHighlight(selectedIdx, false);
+        selectedIdx = idx;
+        setHighlight(idx, true);
+        var info = parts[idx].info;
+        infoName.textContent = info.name;
+        infoFreq.textContent = info.freq;
+        infoTip.textContent  = info.tip;
+        infoPanel.style.display = 'block';
+        updateListActive();
+
+        // Hide firebox so internal parts aren't obscured
+        setFireboxVisible(false);
+
+        // Auto-explode so the selected part is visible
+        if (!isExploded) explodeBtn.click();
+
+        // Per-part camera presets — theta (horizontal), phi (vertical), r (zoom fraction), pan (look-at blend 0-1)
+        var CAM_PRESETS = {
+          'Grill Lid':          { theta: 0.15, phi: 0.85, r: 1.00, pan: 0.95 }, // lid flies up 9u — pan target up, pull camera back
+          'Cooking Grates':     { theta: 0.20, phi: 0.62, r: 0.70, pan: 0.90 }, // grates travel 5.5u up — frame them, not the base
+          'Flavorizer Bars':    { theta: 0.15, phi: 0.95, r: 0.60, pan: 0.85 }, // mid-elevation front, slight angle
+          'Burners':            { theta: 0.10, phi: 1.28, r: 0.60, pan: 0.85 }, // low-angle front to see burner tubes
+          'Drip Tray':          { theta: 0.15, phi: 1.45, r: 1.00, pan: 0.95 }, // tray drops 7u — pan target down, pull camera back
+          'Side Shelves':       { theta: 2.10, phi: 1.00, r: 0.62, pan: 0.55 }, // from the right side
+          'Cart & Frame':       { theta: 0.55, phi: 1.42, r: 0.72, pan: 0.40 }, // low wide shot, default front
+          'Handles & Controls': { theta: 0.00, phi: 1.10, r: 0.54, pan: 0.55 }, // dead-front, mid-height
+          'Grill Component':    { theta: 0.55, phi: 1.15, r: 0.65, pan: 0.50 }, // fallback
+        };
+        var partName = parts[idx].info.name;
+        var preset = CAM_PRESETS[partName];
+        var panBlend = 0.55;
+        if (partName === 'Firebox Body') {
+          // Face the specific panel using its explode direction
+          var ed = parts[idx].explodeDir;
+          thetaTarget = Math.atan2(ed.x, ed.z);
+          phiTarget = 1.08;
+          camRTarget = camRBase * 0.60;
+          panBlend = 0.50;
+        } else if (preset) {
+          thetaTarget = preset.theta;
+          phiTarget   = preset.phi;
+          camRTarget  = camRBase * preset.r;
+          panBlend    = preset.pan !== undefined ? preset.pan : 0.55;
+        } else {
+          // fallback: orbit toward part position
+          var dir = parts[idx].obj.position.clone().sub(CAM_TARGET);
+          if (dir.length() > 0.1) thetaTarget = Math.atan2(dir.x, dir.z);
+          phiTarget  = 1.1;
+          camRTarget = camRBase * 0.62;
+        }
+
+        // Pan look-at target toward the selected part's world center
+        var partBox = new THREE.Box3().setFromObject(parts[idx].obj);
+        var partCenter = partBox.getCenter(new THREE.Vector3());
+        camTargetGoal.lerpVectors(camTargetBase, partCenter, panBlend);
+      }
+
+      // Debug hook for automated screenshots
+      window.__bbq3d = {
+        selectByName: function(name) {
+          for (var i = 0; i < parts.length; i++) {
+            if (parts[i].info && parts[i].info.name === name) { selectPart(i); return i; }
+          }
+          return -1;
+        },
+        partNames: function() { return parts.map(function(p){ return p.info && p.info.name; }); },
+        explode: function() { if (!isExploded) explodeBtn.click(); }
+      };
+
+      // ── Raycasting ────────────────────────────────────────────────────────
+      var raycaster = new THREE.Raycaster();
+      var mouseNDC  = new THREE.Vector2();
+      var dragMoved = false;
+
+      canvas.addEventListener('click', function(e) {
+        if (dragMoved || !parts.length) return;
+        var rect = canvas.getBoundingClientRect();
+        mouseNDC.set(
+          ((e.clientX - rect.left) / rect.width)  *  2 - 1,
+          -((e.clientY - rect.top)  / rect.height) * 2 + 1
+        );
+        raycaster.setFromCamera(mouseNDC, camera);
+        var hits = raycaster.intersectObjects(raycastMeshes, true);
+        if (hits.length) {
+          selectPart(hits[0].object.userData.partIdx);
+        } else {
+          if (selectedIdx !== null) { setHighlight(selectedIdx, false); selectedIdx = null; }
+          infoPanel.style.display = 'none';
+          updateListActive();
+          setFireboxVisible(true);
+        }
+      });
+
+      // ── Orbit ─────────────────────────────────────────────────────────────
+      var pointerDown = false, prevX = 0, prevY = 0;
+      canvas.addEventListener('pointerdown', function(e) {
+        pointerDown = true; dragMoved = false;
+        prevX = e.clientX; prevY = e.clientY;
+        canvas.setPointerCapture(e.pointerId);
+      });
+      canvas.addEventListener('pointermove', function(e) {
+        if (!pointerDown) return;
+        var dx = e.clientX - prevX, dy = e.clientY - prevY;
+        if (Math.abs(dx) + Math.abs(dy) > 3) dragMoved = true;
+        theta -= dx * 0.007; thetaTarget = theta;
+        phi = Math.max(0.25, Math.min(1.58, phi + dy * 0.007)); phiTarget = phi;
+        prevX = e.clientX; prevY = e.clientY;
+        updateCamera();
+      });
+      canvas.addEventListener('pointerup', function() { pointerDown = false; });
+
+      // ── Zoom (scroll wheel) ───────────────────────────────────────────────
+      canvas.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        var factor = e.deltaY > 0 ? 1.08 : 0.92;
+        camRTarget = Math.max(camRBase * 0.3, Math.min(camRBase * 2.2, camRTarget * factor));
+      }, { passive: false });
+
+      // ── Explode / Reset ───────────────────────────────────────────────────
+      var EXPLODE_DIST = 4; // fallback
+
+      explodeBtn.addEventListener('click', function() {
+        isExploded = !isExploded;
+        parts.forEach(function(p) {
+          if (isExploded) {
+            var dist = (p.info && p.info.explodeDist) ? p.info.explodeDist : EXPLODE_DIST;
+            p.targetPos.copy(p.basePos).addScaledVector(p.explodeDir, dist);
+          } else {
+            p.targetPos.copy(p.basePos);
+          }
+          if (p.info && (p.info.name === 'Burners' || p.info.name === 'Flavorizer Bars')) {
+            p.meshes.forEach(function(m) {
+              if (!m.userData.localTarget) return;
+              m.userData.localTarget.copy(isExploded ? m.userData.localExplode : m.userData.localBase);
+            });
+          }
+        });
+        if (isExploded) {
+          explodeBtn.textContent = 'Collapse';
+          explodeBtn.style.background  = 'var(--flame)';
+          explodeBtn.style.borderColor = 'var(--flame)';
+          explodeBtn.style.color = '#111';
+        } else {
+          setFireboxVisible(true);
+          explodeBtn.textContent = 'Explode View';
+          explodeBtn.style.background = explodeBtn.style.borderColor = explodeBtn.style.color = '';
+        }
+      });
+
+      resetBtn.addEventListener('click', function() {
+        if (selectedIdx !== null) { setHighlight(selectedIdx, false); selectedIdx = null; }
+        infoPanel.style.display = 'none';
+        updateListActive();
+        setFireboxVisible(true);
+        thetaTarget = 0.55; phiTarget = 1.15; camRTarget = camRBase;
+        camTargetGoal.copy(camTargetBase);
+        isExploded = false;
+        parts.forEach(function(p) {
+          p.targetPos.copy(p.basePos);
+          if (p.info && (p.info.name === 'Burners' || p.info.name === 'Flavorizer Bars')) {
+            p.meshes.forEach(function(m) {
+              if (m.userData.localTarget) m.userData.localTarget.copy(m.userData.localBase);
+            });
+          }
+        });
+        explodeBtn.textContent = 'Explode View';
+        explodeBtn.style.background = explodeBtn.style.borderColor = explodeBtn.style.color = '';
+        explodeBtn.style.background = explodeBtn.style.borderColor = explodeBtn.style.color = '';
+      });
+
+      // ── Resize ────────────────────────────────────────────────────────────
+      function onResize() {
+        var w = canvas.clientWidth, h = canvas.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      window.addEventListener('resize', onResize);
+      onResize();
+
+      // ── Render loop ───────────────────────────────────────────────────────
+      var tick = 0;
+      function animate() {
+        requestAnimationFrame(animate);
+        tick += 0.04;
+        flameLight.intensity = 2.0 + Math.sin(tick) * 0.3 + Math.sin(tick * 2.3) * 0.15;
+        parts.forEach(function(p) {
+          p.obj.position.lerp(p.targetPos, 0.065);
+          if (p.info && (p.info.name === 'Burners' || p.info.name === 'Flavorizer Bars')) {
+            p.meshes.forEach(function(m) {
+              if (m.userData.localTarget) m.position.lerp(m.userData.localTarget, 0.065);
+            });
+          }
+        });
+        // Smooth camera lerp
+        var s = 0.07;
+        var camChanged = false;
+        if (Math.abs(theta - thetaTarget) > 0.0001) { theta += (thetaTarget - theta) * s; camChanged = true; }
+        if (Math.abs(phi - phiTarget) > 0.0001) { phi += (phiTarget - phi) * s; camChanged = true; }
+        if (Math.abs(CAM_R - camRTarget) > 0.001) { CAM_R += (camRTarget - CAM_R) * s; camChanged = true; }
+        if (CAM_TARGET.distanceTo(camTargetGoal) > 0.001) { CAM_TARGET.lerp(camTargetGoal, s); camChanged = true; }
+        if (camChanged) updateCamera();
+        renderer.render(scene, camera);
+      }
+      animate();
+    })();
+
+    /* ---- end explodex ---- */
+    (function deadCodeGuard() { return; // OLD PROCEDURAL CODE REMOVED
+
+
+      // Camera
+      var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+      var theta = 0.55, phi = 1.15, CAM_R = 15;
+      var CAM_TARGET = new THREE.Vector3(0, 0.8, 0);
+
+      function updateCamera() {
+        camera.position.set(
+          CAM_R * Math.sin(phi) * Math.sin(theta),
+          CAM_R * Math.cos(phi) + 0.5,
+          CAM_R * Math.sin(phi) * Math.cos(theta)
+        );
+        camera.lookAt(CAM_TARGET);
+      }
+      updateCamera();
+
+      // Scene & lights
+      var scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0x0d0d0d, 22, 50);
+
+      scene.add(new THREE.AmbientLight(0xF0EAD6, 0.75));
+
+      var dirLight = new THREE.DirectionalLight(0xfff5e0, 1.6);
+      dirLight.position.set(4, 8, 5);
+      scene.add(dirLight);
+
+      var dirLight2 = new THREE.DirectionalLight(0xffe8d0, 0.9);
+      dirLight2.position.set(-3, 4, 6);
+      scene.add(dirLight2);
+
+      var flameLight = new THREE.PointLight(0xE8872A, 2.2, 10);
+      flameLight.position.set(0, -1.5, 0);
+      scene.add(flameLight);
+
+      var fillLight = new THREE.DirectionalLight(0x6688aa, 0.5);
+      fillLight.position.set(-4, 2, -4);
+      scene.add(fillLight);
+
+      // Part management
+      var partGroups = [], raycastTargets = [], selectedGroup = null;
+
+      function makePart(name, freq, tip, exDir, hexColor) {
+        var g = new THREE.Group();
+        g.userData = {
+          name: name, freq: freq, tip: tip,
+          exDir: new THREE.Vector3(exDir[0], exDir[1], exDir[2]),
+          hexColor: hexColor,
+          basePos: new THREE.Vector3(),
+          targetPos: new THREE.Vector3()
+        };
+        scene.add(g);
+        partGroups.push(g);
+        return g;
+      }
+
+      function addBox(g, w, h, d, x, y, z, rx, ry, rz) {
+        var geo  = new THREE.BoxGeometry(w, h, d);
+        var mat  = new THREE.MeshStandardMaterial({
+          color: g.userData.hexColor, roughness: 0.62, metalness: 0.35,
+          emissive: 0x000000, emissiveIntensity: 0
+        });
+        var mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(x||0, y||0, z||0);
+        if (rx) mesh.rotation.x = rx;
+        if (ry) mesh.rotation.y = ry;
+        if (rz) mesh.rotation.z = rz;
+        mesh.userData.partGroup = g;
+        g.add(mesh); raycastTargets.push(mesh);
+        return mesh;
+      }
+
+      function addCyl(g, rT, rB, h, seg, x, y, z, rx, ry, rz) {
+        var geo  = new THREE.CylinderGeometry(rT, rB, h, seg);
+        var mat  = new THREE.MeshStandardMaterial({
+          color: g.userData.hexColor, roughness: 0.5, metalness: 0.6,
+          emissive: 0x000000, emissiveIntensity: 0
+        });
+        var mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(x||0, y||0, z||0);
+        if (rx) mesh.rotation.x = rx;
+        if (ry) mesh.rotation.y = ry;
+        if (rz) mesh.rotation.z = rz;
+        mesh.userData.partGroup = g;
+        g.add(mesh); raycastTargets.push(mesh);
+        return mesh;
+      }
+
+      function addHalfCyl(g, r, h, x, y, z) {
+        // Half-cylinder dome: phiStart=0, phiLength=PI → top dome after rotation.z=PI/2
+        var geo  = new THREE.CylinderGeometry(r, r, h, 24, 1, false, 0, Math.PI);
+        var mat  = new THREE.MeshStandardMaterial({
+          color: g.userData.hexColor, roughness: 0.6, metalness: 0.2,
+          emissive: 0x000000, emissiveIntensity: 0
+        });
+        var mesh = new THREE.Mesh(geo, mat);
+        mesh.rotation.z = Math.PI / 2;
+        mesh.position.set(x||0, y||0, z||0);
+        mesh.userData.partGroup = g;
+        g.add(mesh); raycastTargets.push(mesh);
+        return mesh;
+      }
+
+      // ── Build the BBQ ────────────────────────────────────────────────────
+
+      // 1. Cart & Frame
+      var frame = makePart('Cart & Frame', 'Monthly',
+        'Wipe down legs and bottom shelf monthly. Check for rust spots and treat early with a rust converter. Clean wheels and adjust leveling feet each season.',
+        [0, -2.8, 0], 0x2e2e2e);
+      addBox(frame, 0.15, 3.0, 0.15, -2.2, -1.55,  1.0);
+      addBox(frame, 0.15, 3.0, 0.15,  2.2, -1.55,  1.0);
+      addBox(frame, 0.15, 3.0, 0.15, -2.2, -1.55, -1.0);
+      addBox(frame, 0.15, 3.0, 0.15,  2.2, -1.55, -1.0);
+      addBox(frame, 4.55, 0.06, 2.2, 0, -2.8, 0);
+      addBox(frame, 4.55, 0.06, 0.06, 0, -0.55,  1.08);
+      addBox(frame, 4.55, 0.06, 0.06, 0, -0.55, -1.08);
+      addCyl(frame, 0.18, 0.18, 0.1, 10, -2.2, -3.0, 1.0, 0, 0, Math.PI/2);
+      addCyl(frame, 0.18, 0.18, 0.1, 10,  2.2, -3.0, 1.0, 0, 0, Math.PI/2);
+
+      // 2. Firebox Body
+      var firebox = makePart('Firebox Body', 'Every 3 months',
+        'Scrape accumulated ash and grease from the interior walls and floor. A clean firebox prevents corrosion, ensures even heat distribution, and eliminates dangerous hot spots.',
+        [0, 0, 2.8], 0x303030);
+      addBox(firebox, 5.0, 1.6, 2.4, 0, 0.8, 0);
+
+      // 3. Side Shelves
+      var shelves = makePart('Side Shelves', 'After every use',
+        'Wipe with warm soapy water after each cookout. Food residue and grease attract insects overnight. Dry thoroughly to prevent rust on the folding hinges.',
+        [0, 2.4, 0], 0x383838);
+      addBox(shelves, 1.8, 0.05, 2.4, -3.4, 0.85, 0);
+      addBox(shelves, 0.05, 0.42, 2.4, -2.52, 0.64, 0);
+      addBox(shelves, 1.8, 0.05, 2.4,  3.4, 0.85, 0);
+      addBox(shelves, 0.05, 0.42, 2.4,  2.52, 0.64, 0);
+
+      // 4. Drip Tray
+      var dripTray = makePart('Drip Tray', 'Every 2–3 uses',
+        'Empty and wipe after every 2-3 cooks. A full drip tray is the #1 cause of grease fires. Line with heavy-duty aluminum foil for dramatically easier cleanup.',
+        [0, 0, -2.8], 0x2a2a2a);
+      addBox(dripTray, 4.6, 0.10, 2.0, 0, 0.12, 0);
+      addBox(dripTray, 4.6, 0.14, 0.06, 0, 0.22,  0.97);
+      addBox(dripTray, 4.6, 0.14, 0.06, 0, 0.22, -0.97);
+      addBox(dripTray, 0.06, 0.14, 2.0,  2.22, 0.22, 0);
+      addBox(dripTray, 0.06, 0.14, 2.0, -2.22, 0.22, 0);
+
+      // 5. Burners
+      var burners = makePart('Burners', 'Every 6 months',
+        'Remove and inspect burner tubes for clogs, spider webs, and corrosion. Use a burner cleaning rod to clear ports. Blocked burners cause uneven heat and dangerous flare-ups.',
+        [-2.8, 0, 0], 0x5a5a5a);
+      addCyl(burners, 0.08, 0.08, 4.5, 12, 0, 0.48, -0.6, 0, 0, Math.PI/2);
+      addCyl(burners, 0.08, 0.08, 4.5, 12, 0, 0.48,  0.0, 0, 0, Math.PI/2);
+      addCyl(burners, 0.08, 0.08, 4.5, 12, 0, 0.48,  0.6, 0, 0, Math.PI/2);
+
+      // 6. Flavorizer Bars
+      var flavorizer = makePart('Flavorizer Bars', 'Every 3–5 uses',
+        'Remove and scrape off grease deposits with a putty knife. Baked-on grease causes flare-ups and bitter smoke. A quick pass with a brush after each cook extends cleaning intervals.',
+        [2.8, 0, 0], 0x363636);
+      for (var fi = -2; fi <= 2; fi++) {
+        addBox(flavorizer, 4.45, 0.22, 0.26, 0, 0.75, fi * 0.38, 0.42, 0, 0);
+      }
+
+      // 7. Cooking Grates
+      var grates = makePart('Cooking Grates', 'After every use',
+        'Preheat on high for 10 minutes then brush with a stiff grill brush. Monthly: soak in hot soapy water and scrub thoroughly. Well-seasoned grates are naturally non-stick and rust-resistant.',
+        [0, 2.8, 0], 0x525252);
+      for (var gi = -4; gi <= 4; gi++) {
+        addBox(grates, 4.45, 0.08, 0.05, 0, 1.06, gi * 0.24);
+      }
+      addBox(grates, 0.05, 0.08, 2.0, -1.8, 1.06, 0);
+      addBox(grates, 0.05, 0.08, 2.0,  0.0, 1.06, 0);
+      addBox(grates, 0.05, 0.08, 2.0,  1.8, 1.06, 0);
+
+      // 8. Grill Lid
+      var lid = makePart('Grill Lid', 'Every 5 uses',
+        'Wipe the interior with a damp cloth to remove smoke residue and carbon buildup. Never use oven cleaner — it damages the porcelain enamel coating and causes peeling and rust.',
+        [0, 3.2, 0], 0x3a3a3a);
+      addBox(lid, 5.0, 0.22, 2.4, 0, 1.61, 0);
+      addHalfCyl(lid, 1.15, 5.0, 0, 1.58, 0);
+      addBox(lid, 1.1, 0.12, 0.12, 0, 2.78, 0);
+      addBox(lid, 0.12, 0.32, 0.12, -0.5, 2.62, 0);
+      addBox(lid, 0.12, 0.32, 0.12,  0.5, 2.62, 0);
+      addBox(lid, 0.55, 0.06, 0.08, 0.2, 2.83, 0.5);
+
+      // Store base positions
+      partGroups.forEach(function(g) {
+        g.userData.basePos.copy(g.position);
+        g.userData.targetPos.copy(g.position);
+      });
+
+      // ── Raycasting ──────────────────────────────────────────────────────
+      var raycaster = new THREE.Raycaster();
+      var mouseNDC  = new THREE.Vector2();
+
+      function setHighlight(g, on) {
+        var hex = on ? 0xB22222 : 0x000000;
+        var intensity = on ? 0.35 : 0;
+        g.traverse(function(child) {
+          if (child.isMesh) {
+            child.material.emissive.setHex(hex);
+            child.material.emissiveIntensity = intensity;
+          }
+        });
+      }
+
+      function selectPart(g) {
+        if (selectedGroup === g) {
+          setHighlight(g, false);
+          selectedGroup = null;
+          infoPanel.style.display = 'none';
+          placeholder.style.display = 'block';
+          return;
+        }
+        if (selectedGroup) setHighlight(selectedGroup, false);
+        selectedGroup = g;
+        setHighlight(g, true);
+        infoName.textContent = g.userData.name;
+        infoFreq.textContent = g.userData.freq;
+        infoTip.textContent  = g.userData.tip;
+        placeholder.style.display = 'none';
+        infoPanel.style.display   = 'block';
+      }
+
+      var dragMoved = false;
+
+      canvas.addEventListener('click', function(e) {
+        if (dragMoved) return;
+        var rect = canvas.getBoundingClientRect();
+        mouseNDC.set(
+          ((e.clientX - rect.left) / rect.width)  * 2 - 1,
+          -((e.clientY - rect.top)  / rect.height) * 2 + 1
+        );
+        raycaster.setFromCamera(mouseNDC, camera);
+        var hits = raycaster.intersectObjects(raycastTargets);
+        if (hits.length) {
+          selectPart(hits[0].object.userData.partGroup);
+        } else {
+          if (selectedGroup) { setHighlight(selectedGroup, false); selectedGroup = null; }
+          infoPanel.style.display = 'none';
+          placeholder.style.display = 'block';
+        }
+      });
+
+      // ── Orbit Controls ───────────────────────────────────────────────────
+      var pointerDown = false, prevX = 0, prevY = 0;
+
+      canvas.addEventListener('pointerdown', function(e) {
+        pointerDown = true; dragMoved = false;
+        prevX = e.clientX; prevY = e.clientY;
+        canvas.setPointerCapture(e.pointerId);
+      });
+      canvas.addEventListener('pointermove', function(e) {
+        if (!pointerDown) return;
+        var dx = e.clientX - prevX, dy = e.clientY - prevY;
+        if (Math.abs(dx) + Math.abs(dy) > 3) dragMoved = true;
+        theta -= dx * 0.007;
+        phi = Math.max(0.28, Math.min(1.55, phi + dy * 0.007));
+        prevX = e.clientX; prevY = e.clientY;
+        updateCamera();
+      });
+      canvas.addEventListener('pointerup', function() { pointerDown = false; });
+
+      // ── Explode / Reset ──────────────────────────────────────────────────
+      var isExploded = false;
+
+      function setTargets(exploded) {
+        partGroups.forEach(function(g) {
+          if (exploded) {
+            g.userData.targetPos.copy(g.userData.basePos).addScaledVector(g.userData.exDir, 2.0);
+          } else {
+            g.userData.targetPos.copy(g.userData.basePos);
+          }
+        });
+      }
+
+      explodeBtn.addEventListener('click', function() {
+        isExploded = !isExploded;
+        setTargets(isExploded);
+        if (isExploded) {
+          explodeBtn.textContent = 'Collapse';
+          explodeBtn.style.background = 'var(--flame)';
+          explodeBtn.style.borderColor = 'var(--flame)';
+          explodeBtn.style.color = '#111';
+        } else {
+          explodeBtn.textContent = 'Explode View';
+          explodeBtn.style.background = '';
+          explodeBtn.style.borderColor = '';
+          explodeBtn.style.color = '';
+        }
+      });
+
+      resetBtn.addEventListener('click', function() {
+        if (selectedGroup) { setHighlight(selectedGroup, false); selectedGroup = null; }
+        infoPanel.style.display = 'none';
+        placeholder.style.display = 'block';
+        theta = 0.55; phi = 1.15; updateCamera();
+        if (isExploded) {
+          isExploded = false; setTargets(false);
+          explodeBtn.textContent = 'Explode View';
+          explodeBtn.style.background = '';
+          explodeBtn.style.borderColor = '';
+          explodeBtn.style.color = '';
+        }
+      });
+
+      // ── Resize ───────────────────────────────────────────────────────────
+      function onResize() {
+        var w = canvas.clientWidth, h = canvas.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      window.addEventListener('resize', onResize);
+      onResize();
+
+      // ── Render Loop ──────────────────────────────────────────────────────
+      var tick = 0;
+      function animate() {
+        requestAnimationFrame(animate);
+        tick += 0.04;
+        flameLight.intensity = 1.8 + Math.sin(tick) * 0.28 + Math.sin(tick * 2.3) * 0.12;
+        partGroups.forEach(function(g) {
+          g.position.lerp(g.userData.targetPos, 0.065);
+        });
+        renderer.render(scene, camera);
+      }
+      animate();
     })();
 
     // Before/After scroll-reveal — re-animates every pass
