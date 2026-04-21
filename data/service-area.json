@@ -1,0 +1,30 @@
+{
+  "in_area_cities": [
+    "Encinitas",
+    "Carlsbad",
+    "Oceanside",
+    "San Marcos",
+    "Vista",
+    "Solana Beach",
+    "Del Mar",
+    "Rancho Santa Fe",
+    "Escondido",
+    "Cardiff",
+    "Cardiff-by-the-Sea",
+    "Leucadia",
+    "Olivenhain"
+  ],
+  "in_area_zips": [
+    "92007", "92008", "92009", "92010", "92011",
+    "92014",
+    "92024",
+    "92025", "92026", "92027", "92029",
+    "92054", "92056", "92057", "92058",
+    "92067",
+    "92069", "92078", "92081", "92083", "92084",
+    "92075",
+    "92091"
+  ],
+  "out_of_area_response": "That's outside my usual service area. Sam handles those by request — he'll text you to confirm if it works.",
+  "notes": "ZIPs cover North County San Diego coastal + inland cities listed on grimetoprime.space. Sam reviews out-of-area requests case by case."
+}

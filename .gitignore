@@ -3,3 +3,12 @@ temporary screenshots/
 *.png
 !brand_assests/*.png
 .claude/
+.env
+.env.local
+.vercel
+
+# OAuth credentials — contains client_id + client_secret. Never commit.
+scripts/credentials.json
+
+# Test payloads (contain sample customer data)
+.tmp-*.json
