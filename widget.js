@@ -32,9 +32,9 @@
   const css = `
     .gb-root {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 9999;
+      bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+      right: calc(24px + env(safe-area-inset-right, 0px));
+      z-index: 2147483000;
       font-family: 'Open Sans', system-ui, sans-serif;
       color: #F0EAD6;
     }
@@ -310,7 +310,12 @@
 
     /* Mobile */
     @media (max-width: 520px) {
-      .gb-root { bottom: 16px; right: 16px; }
+      .gb-root {
+        /* 70px of clearance for the site's bottom announcement bar + the iOS
+           home indicator. If you remove the announcement bar, drop the 70px back to 16px. */
+        bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+        right: calc(16px + env(safe-area-inset-right, 0px));
+      }
       .gb-panel {
         bottom: 0;
         right: 0;
@@ -320,6 +325,8 @@
         max-height: 100vh;
         border-radius: 0;
         border: none;
+        /* Push panel content above the iOS home indicator */
+        padding-bottom: env(safe-area-inset-bottom, 0px);
       }
       .gb-nudge { display: none; }
     }
