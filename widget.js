@@ -328,7 +328,12 @@
         /* Push panel content above the iOS home indicator */
         padding-bottom: env(safe-area-inset-bottom, 0px);
       }
-      .gb-nudge { display: none; }
+      /* Keep the nudge visible on mobile — slightly smaller so it fits. */
+      .gb-nudge {
+        font-size: 11px;
+        padding: 7px 11px;
+        max-width: 180px;
+      }
     }
   `;
 
