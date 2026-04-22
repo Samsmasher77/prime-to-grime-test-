@@ -321,13 +321,15 @@
         right: 0;
         width: 100vw;
         max-width: 100vw;
+        /* --gb-vh is set by JS to window.visualViewport.height so the panel
+           shrinks exactly when the mobile keyboard opens. Falls back to dvh,
+           then vh for old browsers. */
         height: 100vh;
         max-height: 100vh;
-        /* dvh shrinks when the mobile keyboard opens so the chat stays fully
-           visible instead of getting pushed off-screen. Overrides vh above
-           on browsers that support it (iOS 16.4+, Android Chrome 108+). */
         height: 100dvh;
         max-height: 100dvh;
+        height: var(--gb-vh, 100dvh);
+        max-height: var(--gb-vh, 100dvh);
         border-radius: 0;
         border: none;
         /* Push panel content above the iOS home indicator */
@@ -520,11 +522,23 @@
     }
   }
 
+  function updatePanelHeight() {
+    const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    panel.style.setProperty('--gb-vh', h + 'px');
+  }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', () => { if (state.open) updatePanelHeight(); });
+    window.visualViewport.addEventListener('scroll', () => { if (state.open) updatePanelHeight(); });
+  }
+  window.addEventListener('resize', () => { if (state.open) updatePanelHeight(); });
+
   function openPanel() {
     state.open = true;
     panel.classList.add('gb-open');
     bubble.style.display = 'none';
     nudge.classList.remove('gb-show');
+    updatePanelHeight();
     if (!state.started) startConversation();
     setTimeout(() => input.focus(), 300);
   }
@@ -533,6 +547,7 @@
     state.open = false;
     panel.classList.remove('gb-open');
     bubble.style.display = 'flex';
+    panel.style.removeProperty('--gb-vh');
   }
 
   // ── Wire-up ───────────────────────────────────────────────────────────────
