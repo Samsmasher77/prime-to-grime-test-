@@ -269,7 +269,9 @@
       padding: 10px 12px;
       border-radius: 10px;
       font-family: inherit;
-      font-size: 14px;
+      /* 16px prevents iOS Safari from auto-zooming on input focus,
+         which would push the send/close buttons off-screen. */
+      font-size: 16px;
       line-height: 1.4;
       resize: none;
       max-height: 100px;
