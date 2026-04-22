@@ -469,6 +469,12 @@
         });
 
         if (response.ok) {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'booking_submitted',
+            city: new FormData(form).get('city') || '',
+            service: new FormData(form).getAll('service').join(', ') || ''
+          });
           form.style.display = 'none';
           successMsg.style.display = 'block';
         } else {
