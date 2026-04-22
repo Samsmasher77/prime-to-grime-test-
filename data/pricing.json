@@ -23,14 +23,14 @@
       "id": "kamado",
       "label": "Kamado / Big Green Egg",
       "description": "Ceramic cooker cleaning",
-      "price": 100
+      "price": 120
     }
   ],
   "addons": [
     {
       "id": "kamado_bundle",
       "label": "Add Kamado to another grill cleaning",
-      "price": 75,
+      "price": 80,
       "requires_primary_tier": true,
       "note": "Customer must already be booking another tier (standard_gas, large_gas, or smoker_commercial)."
     }
@@ -38,5 +38,5 @@
   "travel_fee": null,
   "disclaimer": "Price is firm for conditions as described. On arrival, Sam may adjust within a reasonable range if the job is materially different (e.g., significantly more buildup than described). You'll be told before any work begins.",
   "currency": "USD",
-  "updated": "2026-04-21"
+  "updated": "2026-04-22"
 }

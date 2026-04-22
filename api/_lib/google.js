@@ -166,19 +166,57 @@ function renderQuoteEmail(payload) {
     .replace('{{PREFERRED_TIMING}}', escapeHtml(payload.preferred_timing || '—'));
 }
 
-function buildMimeMessage({ to, from, subject, html, cc }) {
+function buildMimeMessage({ to, from, subject, html, cc, attachment }) {
   // RFC 2822 with UTF-8 headers encoded via RFC 2047 "B" (base64).
   const b = (s) => `=?UTF-8?B?${Buffer.from(s, 'utf8').toString('base64')}?=`;
+
+  let bodyHeaders;
+  let body;
+
+  if (attachment && attachment.data) {
+    // multipart/mixed: HTML body + image attachment
+    const boundary = '----grime_boundary_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    const mediaType = attachment.mediaType || 'image/jpeg';
+    const filename = attachment.filename || 'grill-photo.jpg';
+    // Wrap base64 at 76 chars per RFC 2045.
+    const encoded = attachment.data.replace(/(.{76})/g, '$1\r\n');
+
+    bodyHeaders = [`Content-Type: multipart/mixed; boundary="${boundary}"`];
+
+    const parts = [
+      `--${boundary}`,
+      'Content-Type: text/html; charset=UTF-8',
+      'Content-Transfer-Encoding: 7bit',
+      '',
+      html,
+      '',
+      `--${boundary}`,
+      `Content-Type: ${mediaType}; name="${filename}"`,
+      `Content-Disposition: attachment; filename="${filename}"`,
+      'Content-Transfer-Encoding: base64',
+      '',
+      encoded,
+      '',
+      `--${boundary}--`,
+    ];
+    body = parts.join('\r\n');
+  } else {
+    bodyHeaders = [
+      'Content-Type: text/html; charset=UTF-8',
+      'Content-Transfer-Encoding: 7bit',
+    ];
+    body = html;
+  }
+
   const headers = [
     `From: ${from}`,
     `To: ${to}`,
     cc ? `Cc: ${cc}` : null,
     `Subject: ${b(subject)}`,
     'MIME-Version: 1.0',
-    'Content-Type: text/html; charset=UTF-8',
-    'Content-Transfer-Encoding: 7bit',
+    ...bodyHeaders,
   ].filter(Boolean);
-  const raw = headers.join('\r\n') + '\r\n\r\n' + html;
+  const raw = headers.join('\r\n') + '\r\n\r\n' + body;
   // Gmail wants base64url (no padding) of the full MIME message.
   return Buffer.from(raw, 'utf8').toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
@@ -187,7 +225,7 @@ function buildMimeMessage({ to, from, subject, html, cc }) {
  * Send the branded quote email to the customer (and optionally CC the internal notify address).
  * Returns {ok: true, messageId} on success or {ok: false, error} on failure — never throws.
  */
-export async function sendQuoteEmail(payload) {
+export async function sendQuoteEmail(payload, photo) {
   try {
     const from = requireEnv('QUOTE_FROM_EMAIL');
     const notify = process.env.QUOTE_NOTIFY_EMAIL && process.env.QUOTE_NOTIFY_EMAIL !== from
@@ -199,6 +237,14 @@ export async function sendQuoteEmail(payload) {
     const html = renderQuoteEmail(payload);
     const subject = `Your Grime to Prime Quote — $${payload.quoted_price}`;
 
+    const attachment = photo && photo.data
+      ? {
+          data: photo.data,
+          mediaType: photo.mediaType || 'image/jpeg',
+          filename: photo.filename || `grill-${Date.now()}.jpg`,
+        }
+      : null;
+
     const gmail = gmailClient();
     const raw = buildMimeMessage({
       to: payload.email,
@@ -206,6 +252,7 @@ export async function sendQuoteEmail(payload) {
       subject,
       html,
       cc: notify,
+      attachment,
     });
 
     const result = await gmail.users.messages.send({

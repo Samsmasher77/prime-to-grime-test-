@@ -5,26 +5,12 @@
 (function () {
   if (window.__grimeBotLoaded) return;
 
-  // ── Feature flag ──────────────────────────────────────────────────────────
-  // Widget stays hidden on production until you explicitly enable it:
-  //   • Visit any page with ?quotebot=1   → enables + remembers via localStorage
-  //   • Visit any page with ?quotebot=0   → disables + clears the remembered flag
-  //   • On localhost, widget is always on (no flag needed) for dev.
+  // Emergency off-switch: visit any page with ?quotebot=0 to hide the widget
+  // on that browser (useful for troubleshooting / screenshots without redeploy).
   try {
     const params = new URLSearchParams(window.location.search);
-    const isLocalhost = /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname);
-    if (params.get('quotebot') === '1') {
-      localStorage.setItem('grime-quotebot', '1');
-    } else if (params.get('quotebot') === '0') {
-      localStorage.removeItem('grime-quotebot');
-      return;
-    }
-    const enabled = isLocalhost || localStorage.getItem('grime-quotebot') === '1';
-    if (!enabled) return;
-  } catch {
-    // If localStorage is blocked (private mode etc.), require the query param each time.
-    if (!/[?&]quotebot=1(?:&|$)/.test(window.location.search)) return;
-  }
+    if (params.get('quotebot') === '0') return;
+  } catch {}
 
   window.__grimeBotLoaded = true;
 
@@ -261,6 +247,60 @@
       gap: 8px;
       align-items: flex-end;
     }
+    .gb-attach {
+      background: transparent;
+      border: 1px solid rgba(232, 135, 42, 0.4);
+      color: #E8872A;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+    }
+    .gb-attach:hover:not(:disabled) { background: rgba(232, 135, 42, 0.12); border-color: #E8872A; color: #F0EAD6; }
+    .gb-attach:focus-visible { outline: 2px solid #E8872A; outline-offset: 1px; }
+    .gb-attach:disabled { opacity: 0.4; cursor: not-allowed; }
+    .gb-attach svg { width: 18px; height: 18px; }
+
+    .gb-thumb-pill {
+      display: none;
+      margin: 0 12px 8px;
+      padding: 8px 10px;
+      background: #111111;
+      border: 1px solid rgba(232, 135, 42, 0.3);
+      border-radius: 10px;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #C8C0AD;
+    }
+    .gb-thumb-pill.gb-show { display: flex; }
+    .gb-thumb-pill img {
+      width: 44px; height: 44px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .gb-thumb-pill .gb-thumb-meta { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gb-thumb-remove {
+      background: transparent;
+      border: none;
+      color: #C8C0AD;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 140ms ease, color 140ms ease;
+    }
+    .gb-thumb-remove:hover { background: rgba(178, 34, 34, 0.3); color: #F0EAD6; }
+    .gb-thumb-remove svg { width: 14px; height: 14px; }
     .gb-input {
       flex: 1 1 auto;
       background: #111111;
@@ -389,7 +429,23 @@
         </button>
       </div>
       <div class="gb-messages" id="gb-messages" aria-live="polite"></div>
+      <div class="gb-thumb-pill" id="gb-thumb-pill">
+        <img id="gb-thumb-img" alt="Attached grill photo preview" />
+        <div class="gb-thumb-meta" id="gb-thumb-meta">Photo attached</div>
+        <button class="gb-thumb-remove" id="gb-thumb-remove" aria-label="Remove attached photo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/>
+          </svg>
+        </button>
+      </div>
       <div class="gb-input-wrap">
+        <input type="file" id="gb-file" accept="image/*" capture="environment" hidden />
+        <button class="gb-attach" id="gb-attach" aria-label="Attach a photo of your grill" title="Attach a photo of your grill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </button>
         <textarea
           class="gb-input"
           id="gb-input"
@@ -416,12 +472,20 @@
   const msgContainer = document.getElementById('gb-messages');
   const input = document.getElementById('gb-input');
   const sendBtn = document.getElementById('gb-send');
+  const attachBtn = document.getElementById('gb-attach');
+  const fileInput = document.getElementById('gb-file');
+  const thumbPill = document.getElementById('gb-thumb-pill');
+  const thumbImg = document.getElementById('gb-thumb-img');
+  const thumbMeta = document.getElementById('gb-thumb-meta');
+  const thumbRemove = document.getElementById('gb-thumb-remove');
 
   const state = {
     open: false,
     messages: [], // [{role: 'user'|'assistant', content: string}]
     sending: false,
-    started: false
+    started: false,
+    snapIntroShown: false,
+    pendingImage: null // { data: <base64>, mediaType: 'image/jpeg', previewUrl: <dataURL> }
   };
 
   // ── Helpers ───────────────────────────────────────────────────────────────
@@ -464,24 +528,121 @@
     input.style.height = Math.min(input.scrollHeight, 100) + 'px';
   }
 
+  function updateSendEnabled() {
+    sendBtn.disabled = (!input.value.trim() && !state.pendingImage) || state.sending;
+  }
+
+  // Downscale + JPEG-compress a picked image in the browser. Max dimension 1280px,
+  // 0.8 quality. Vercel caps the /api/chat request body at 6MB — raw phone photos
+  // are routinely 8–12MB, so we MUST compress before sending.
+  function compressImage(file) {
+    return new Promise((resolve, reject) => {
+      if (file.size > 15 * 1024 * 1024) {
+        reject(new Error('That photo is huge — try one under 15MB.'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Could not read that file.'));
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = () => reject(new Error("That doesn't look like a valid image."));
+        img.onload = () => {
+          const MAX = 1280;
+          let { width, height } = img;
+          if (width > MAX || height > MAX) {
+            const scale = MAX / Math.max(width, height);
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          // dataUrl is "data:image/jpeg;base64,XXXX…"
+          const comma = dataUrl.indexOf(',');
+          resolve({
+            data: dataUrl.slice(comma + 1),
+            mediaType: 'image/jpeg',
+            previewUrl: dataUrl,
+          });
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function showThumb(previewUrl, label) {
+    thumbImg.src = previewUrl;
+    thumbMeta.textContent = label || 'Photo attached';
+    thumbPill.classList.add('gb-show');
+  }
+
+  function clearThumb() {
+    state.pendingImage = null;
+    thumbPill.classList.remove('gb-show');
+    thumbImg.removeAttribute('src');
+    fileInput.value = '';
+    updateSendEnabled();
+  }
+
   async function sendMessage(text) {
-    if (state.sending || !text.trim()) return;
+    const trimmed = text.trim();
+    if (state.sending) return;
+    if (!trimmed && !state.pendingImage) return;
     state.sending = true;
     sendBtn.disabled = true;
 
-    state.messages.push({ role: 'user', content: text });
-    renderMessage('user', text);
+    // The photo only rides along on the turn it was attached to — we snapshot
+    // it locally and clear the widget state so subsequent turns don't re-send.
+    const imageForThisTurn = state.pendingImage;
+    const userContent = trimmed || (imageForThisTurn ? 'Photo of my grill.' : '');
+
+    // Render the user bubble (show the photo too, if one was attached).
+    if (imageForThisTurn) {
+      const wrap = document.createElement('div');
+      wrap.className = 'gb-msg gb-msg-user';
+      wrap.style.padding = '6px';
+      const img = document.createElement('img');
+      img.src = imageForThisTurn.previewUrl;
+      img.alt = 'Your grill photo';
+      img.style.cssText = 'display:block; max-width:240px; max-height:200px; border-radius:10px; object-fit:cover;';
+      wrap.appendChild(img);
+      if (trimmed) {
+        const cap = document.createElement('div');
+        cap.style.cssText = 'padding:8px 8px 2px; font-size:14px;';
+        cap.textContent = trimmed;
+        wrap.appendChild(cap);
+      }
+      msgContainer.appendChild(wrap);
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+    } else {
+      renderMessage('user', trimmed);
+    }
+
+    state.messages.push({ role: 'user', content: userContent });
 
     input.value = '';
     autoResize();
+    // NOTE: we intentionally do NOT clear state.pendingImage here. The photo
+    // sticks to the conversation across turns so Claude keeps visual context
+    // even if it asks a follow-up before quoting. The pill stays visible with
+    // an updated label so the user knows the photo is still attached and can
+    // × it off at any time. Auto-cleared when the bot submits the quote.
+    thumbMeta.textContent = 'Photo attached to conversation · tap × to remove';
 
     const typingEl = showTyping();
 
     try {
+      const body = { messages: state.messages };
+      if (imageForThisTurn) {
+        body.pendingImage = { data: imageForThisTurn.data, mediaType: imageForThisTurn.mediaType };
+      }
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: state.messages })
+        body: JSON.stringify(body)
       });
       const data = await res.json();
       typingEl.remove();
@@ -491,6 +652,9 @@
       } else if (data.error) {
         renderMessage('assistant', "Sorry — I hit a snag. Try again?");
       }
+      // Quote submitted → drop the photo so it doesn't ride along on any
+      // trailing small-talk after the lead is captured.
+      if (data.submitted) clearThumb();
     } catch (e) {
       typingEl.remove();
       renderMessage('assistant', "Connection glitch. Give it another try?");
@@ -498,7 +662,7 @@
     }
 
     state.sending = false;
-    sendBtn.disabled = !input.value.trim();
+    updateSendEnabled();
     input.focus();
   }
 
@@ -522,6 +686,19 @@
       typingEl.remove();
       renderMessage('assistant', "Hey! Connection issue on my end — refresh and try again?");
     }
+    showSnapIntro();
+  }
+
+  // Deterministic second bubble promoting the new photo feature. Client-side
+  // (not in state.messages) so it doesn't get sent to Claude as conversation
+  // history. Fires once per open session.
+  function showSnapIntro() {
+    if (state.snapIntroShown) return;
+    state.snapIntroShown = true;
+    setTimeout(() => {
+      const intro = "**NEW — Snap Quote:** tap the camera icon to send a photo of your grill and I'll size up the price on the spot.";
+      renderMessage('assistant', intro);
+    }, 450);
   }
 
   function updatePanelHeight() {
@@ -557,22 +734,40 @@
   closeBtn.addEventListener('click', closePanel);
 
   input.addEventListener('input', () => {
-    sendBtn.disabled = !input.value.trim() || state.sending;
+    updateSendEnabled();
     autoResize();
   });
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      if (input.value.trim()) sendMessage(input.value);
+      if (input.value.trim() || state.pendingImage) sendMessage(input.value);
     }
   });
   sendBtn.addEventListener('click', () => {
-    if (input.value.trim()) sendMessage(input.value);
+    if (input.value.trim() || state.pendingImage) sendMessage(input.value);
   });
 
-  // Show the nudge briefly after the page settles
+  attachBtn.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    try {
+      const img = await compressImage(file);
+      state.pendingImage = img;
+      showThumb(img.previewUrl, file.name ? `${file.name} · ready to send` : 'Photo attached');
+      updateSendEnabled();
+      input.focus();
+    } catch (err) {
+      renderMessage('assistant', err.message || "Couldn't load that photo — try another one?");
+      fileInput.value = '';
+    }
+  });
+  thumbRemove.addEventListener('click', clearThumb);
+
+  // Show the nudge shortly after the page settles, and keep it up long enough
+  // to actually get noticed. Still auto-hides so it doesn't nag forever.
   setTimeout(() => {
     if (!state.open) nudge.classList.add('gb-show');
-  }, 2500);
-  setTimeout(() => nudge.classList.remove('gb-show'), 8000);
+  }, 1000);
+  setTimeout(() => nudge.classList.remove('gb-show'), 16000);
 })();

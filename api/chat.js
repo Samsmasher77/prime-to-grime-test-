@@ -135,11 +135,15 @@ function runTool(name, input) {
   return { error: `Unknown tool: ${name}` };
 }
 
-async function runSubmitQuote(input) {
-  console.log('[submit_quote]', JSON.stringify(input, null, 2));
+async function runSubmitQuote(input, photo) {
+  console.log('[submit_quote]', JSON.stringify(input, null, 2), photo ? `(with photo, ${photo.data.length} b64 chars)` : '');
   // Run sheet append + email send in parallel — sheet is the source of truth,
   // email is a nice-to-have. Lead is "captured" if the sheet succeeds.
-  const [sheetResult, emailResult] = await Promise.all([appendLead(input), sendQuoteEmail(input)]);
+  const extras = photo ? { photo_url: 'attached to email' } : {};
+  const [sheetResult, emailResult] = await Promise.all([
+    appendLead(input, extras),
+    sendQuoteEmail(input, photo),
+  ]);
 
   if (!sheetResult.ok) {
     return {
@@ -196,7 +200,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { messages = [] } = req.body || {};
+  const { messages = [], pendingImage = null } = req.body || {};
 
   // First turn: no messages yet. Return the greeting without hitting the API.
   if (messages.length === 0) {
@@ -214,6 +218,28 @@ export default async function handler(req, res) {
     role: m.role === 'user' ? 'user' : 'assistant',
     content: m.content,
   }));
+
+  // If a photo came with this turn, replace the last user message's string
+  // content with a [image, text] content-block array so Claude sees the image.
+  // The widget only sends pendingImage on the turn the user attached it — we
+  // don't re-send past images, which keeps token cost flat across long chats.
+  if (pendingImage && pendingImage.data && pendingImage.mediaType) {
+    for (let i = apiMessages.length - 1; i >= 0; i--) {
+      if (apiMessages[i].role === 'user') {
+        const text = typeof apiMessages[i].content === 'string'
+          ? apiMessages[i].content
+          : '';
+        apiMessages[i].content = [
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: pendingImage.mediaType, data: pendingImage.data },
+          },
+          { type: 'text', text: text || 'Photo of my grill.' },
+        ];
+        break;
+      }
+    }
+  }
 
   try {
     // Manual tool-use loop. Append each assistant turn + tool_results, re-call.
@@ -244,7 +270,7 @@ export default async function handler(req, res) {
         const toolResults = [];
         for (const tu of toolUseBlocks) {
           const result =
-            tu.name === 'submit_quote' ? await runSubmitQuote(tu.input) : runTool(tu.name, tu.input);
+            tu.name === 'submit_quote' ? await runSubmitQuote(tu.input, pendingImage) : runTool(tu.name, tu.input);
           if (tu.name === 'submit_quote' && result.ok) {
             submittedQuote = tu.input;
           }
