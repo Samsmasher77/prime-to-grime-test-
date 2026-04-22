@@ -323,6 +323,11 @@
         max-width: 100vw;
         height: 100vh;
         max-height: 100vh;
+        /* dvh shrinks when the mobile keyboard opens so the chat stays fully
+           visible instead of getting pushed off-screen. Overrides vh above
+           on browsers that support it (iOS 16.4+, Android Chrome 108+). */
+        height: 100dvh;
+        max-height: 100dvh;
         border-radius: 0;
         border: none;
         /* Push panel content above the iOS home indicator */
