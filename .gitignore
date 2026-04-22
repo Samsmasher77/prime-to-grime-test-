@@ -2,6 +2,9 @@ node_modules/
 temporary screenshots/
 *.png
 !brand_assests/*.png
+!icon-192.png
+!icon-512.png
+!apple-touch-icon.png
 .claude/
 .env
 .env.local
