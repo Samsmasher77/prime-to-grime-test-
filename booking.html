@@ -177,6 +177,37 @@
     }
     select.form-input option[value=""] { color: #999; }
 
+    /* ── ADD-ON ROW (subtle secondary field) ─────── */
+    .addon-row {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: #fafafa;
+      border: 1px dashed #d8d8d8;
+      border-radius: 8px;
+    }
+    .addon-label {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #777;
+      margin-bottom: 8px;
+    }
+    .addon-hint {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      color: #999;
+      font-size: 12px;
+    }
+    .addon-select {
+      background-color: #fff;
+      font-size: 14px;
+    }
+
     /* ── CHECKBOXES ──────────────────────────────── */
     .desired-label {
       font-family: 'Oswald', sans-serif;
@@ -380,16 +411,40 @@
         </div>
 
         <span class="desired-label">Desired Service</span>
-        <div class="checkbox-grid">
-          <label class="checkbox-label">
-            <input type="checkbox" name="service" value="Grill Cleaning" /> Grill Cleaning
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" name="service" value="Grill Repair" /> Grill Repair
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" name="service" value="New Grill" /> New Grill
-          </label>
+        <select class="form-input" name="service" id="serviceSelect" required>
+          <option value="" disabled selected>Select a package</option>
+          <option value="Standard Gas Grill - $160">Standard Gas Grill — $160 (2–4 burner)</option>
+          <option value="Large Gas Grill - $200">Large Gas Grill — $200 (5–6 burner / built-in)</option>
+          <option value="Smoker & Commercial - from $220">Smoker &amp; Commercial — from $220</option>
+          <option value="Kamado / Big Green Egg - $120">Kamado / Big Green Egg — $120</option>
+          <option value="Other">Other (describe below)</option>
+        </select>
+        <input
+          class="form-input"
+          type="text"
+          name="serviceOther"
+          id="serviceOther"
+          placeholder="Tell us what you have or what you need"
+          style="margin-top:10px; display:none;"
+        />
+
+        <div class="addon-row">
+          <span class="addon-label">Add-On Service <span class="addon-hint">(optional — got a 2nd grill?)</span></span>
+          <select class="form-input addon-select" name="addon" id="addonSelect">
+            <option value="">No add-on</option>
+            <option value="2nd Grill - Small / Kamado - $80">+ 2nd Grill · Small / Kamado — $80</option>
+            <option value="2nd Grill - Standard Gas - $120">+ 2nd Grill · Standard Gas — $120</option>
+            <option value="2nd Grill - Large Gas - $160">+ 2nd Grill · Large Gas — $160</option>
+            <option value="Other">Other (describe below)</option>
+          </select>
+          <input
+            class="form-input addon-select"
+            type="text"
+            name="addonOther"
+            id="addonOther"
+            placeholder="Tell us what add-on you'd like"
+            style="margin-top:10px; display:none;"
+          />
         </div>
 
         <div class="form-divider"></div>
@@ -451,6 +506,24 @@
     const form = document.getElementById('bookingForm');
     const submitBtn = document.getElementById('submitBtn');
     const successMsg = document.getElementById('successMsg');
+    const serviceSelect = document.getElementById('serviceSelect');
+    const serviceOther = document.getElementById('serviceOther');
+
+    serviceSelect.addEventListener('change', function () {
+      const isOther = serviceSelect.value === 'Other';
+      serviceOther.style.display = isOther ? 'block' : 'none';
+      serviceOther.required = isOther;
+      if (!isOther) serviceOther.value = '';
+    });
+
+    const addonSelect = document.getElementById('addonSelect');
+    const addonOther = document.getElementById('addonOther');
+    addonSelect.addEventListener('change', function () {
+      const isOther = addonSelect.value === 'Other';
+      addonOther.style.display = isOther ? 'block' : 'none';
+      addonOther.required = isOther;
+      if (!isOther) addonOther.value = '';
+    });
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
@@ -477,7 +550,8 @@
           window.dataLayer.push({
             event: 'booking_submitted',
             city: new FormData(form).get('city') || '',
-            service: new FormData(form).getAll('service').join(', ') || ''
+            service: new FormData(form).get('service') || '',
+            addon: new FormData(form).get('addon') || ''
           });
           form.style.display = 'none';
           successMsg.style.display = 'block';
