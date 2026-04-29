@@ -439,7 +439,7 @@
         </button>
       </div>
       <div class="gb-input-wrap">
-        <input type="file" id="gb-file" accept="image/*" capture="environment" hidden />
+        <input type="file" id="gb-file" accept="image/*" hidden />
         <button class="gb-attach" id="gb-attach" aria-label="Attach a photo of your grill" title="Attach a photo of your grill">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
