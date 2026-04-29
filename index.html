@@ -580,10 +580,126 @@
 
     /* ── PRICING ──────────────────────────────────────── */
     .pricing { background: var(--grill); }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    .pricing-rail-wrap {
+      position: relative;
+      margin: 0 -24px;
+    }
+    .pricing-rail {
+      display: flex;
       gap: 24px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 8px 24px 24px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--red) #1a1a1a;
+      overscroll-behavior-x: contain;
+    }
+    .pricing-rail::-webkit-scrollbar { height: 8px; }
+    .pricing-rail::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 4px; }
+    .pricing-rail::-webkit-scrollbar-thumb { background: var(--red); border-radius: 4px; }
+    .pricing-rail::-webkit-scrollbar-thumb:hover { background: var(--flame); }
+    .pricing-rail::after {
+      content: '';
+      flex: 0 0 160px;
+    }
+    @media (max-width: 768px) {
+      .pricing-rail::after { flex-basis: 40px; }
+    }
+    .pricing-rail .price-card {
+      flex: 0 0 calc((100% - 48px - 96px) / 3.5);
+      min-width: 280px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .pricing-rail .price-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .pricing-rail-fade {
+      position: absolute;
+      top: 0; bottom: 24px;
+      width: 220px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .pricing-rail-fade.right {
+      right: -60px;
+      background: linear-gradient(to left, var(--grill) 0%, var(--grill) 45%, transparent 100%);
+    }
+    .pricing-rail-fade.left {
+      left: -60px;
+      background: linear-gradient(to right, var(--grill) 0%, var(--grill) 45%, transparent 100%);
+    }
+    .pricing-rail-wrap.has-prev .pricing-rail-fade.left,
+    .pricing-rail-wrap.has-next .pricing-rail-fade.right {
+      opacity: 1;
+    }
+    .pricing-rail-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--red);
+      background: rgba(20, 20, 20, 0.92);
+      color: var(--cream);
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 0 4px rgba(195,46,38,0.18);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s, opacity 0.25s;
+    }
+    .pricing-rail-arrow:hover {
+      background: var(--red);
+      border-color: var(--flame);
+      transform: translateY(-50%) scale(1.06);
+      box-shadow: 0 12px 32px rgba(195,46,38,0.45), 0 0 0 6px rgba(245,141,30,0.22);
+    }
+    .pricing-rail-arrow:active {
+      transform: translateY(-50%) scale(0.96);
+    }
+    .pricing-rail-arrow:focus-visible {
+      outline: 2px solid var(--flame);
+      outline-offset: 3px;
+    }
+    .pricing-rail-arrow.left { left: -4px; }
+    .pricing-rail-arrow.right { right: -4px; }
+    .pricing-rail-arrow[disabled] {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .pricing-rail-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--flame);
+    }
+    .pricing-rail-hint .arrow {
+      display: inline-block;
+      animation: nudge 1.6s ease-in-out infinite;
+    }
+    @keyframes nudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+    @media (max-width: 768px) {
+      .pricing-rail .price-card {
+        flex: 0 0 82%;
+        min-width: 0;
+      }
     }
     .price-card {
       background: #141414;
@@ -592,7 +708,10 @@
       padding: 40px 32px;
       position: relative;
       transition: transform 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
     }
+    .price-card > .btn-red { margin-top: auto; }
     .price-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 16px 48px rgba(0,0,0,0.5);
@@ -678,6 +797,132 @@
       left: 0;
       color: var(--flame);
       font-weight: 700;
+    }
+
+    /* ── 2ND-GRILL ADD-ON CARD ───────────────────────── */
+    .addon-card {
+      border-top: 3px solid var(--flame);
+      background: #181410;
+    }
+    .addon-tag {
+      background: var(--flame) !important;
+      color: #111 !important;
+    }
+    .addon-name { color: var(--flame); }
+    .addon-card .price-sub { margin-bottom: 18px; }
+
+    .addon-pills {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 22px;
+      padding: 6px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid #2a2218;
+      border-radius: 10px;
+    }
+    .addon-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 10px 6px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: #888;
+      cursor: pointer;
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+      font-family: inherit;
+    }
+    .addon-pill:hover {
+      color: var(--cream);
+      background: rgba(245, 141, 30, 0.08);
+    }
+    .addon-pill:focus-visible {
+      outline: 2px solid var(--flame);
+      outline-offset: 2px;
+    }
+    .addon-pill:active { transform: scale(0.97); }
+    .addon-pill.is-active {
+      background: rgba(245, 141, 30, 0.14);
+      border-color: var(--flame);
+      color: var(--cream);
+      box-shadow: 0 4px 14px rgba(245, 141, 30, 0.18);
+    }
+    .pill-size {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .pill-price {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: inherit;
+    }
+    .addon-pill.is-active .pill-price { color: var(--flame); }
+
+    .addon-price-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+    .addon-was {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      padding-bottom: 8px;
+    }
+    .addon-was-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .addon-was-amount {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px;
+      color: #777;
+      text-decoration: line-through;
+      text-decoration-color: rgba(195, 46, 38, 0.7);
+      text-decoration-thickness: 2px;
+    }
+    .addon-amount {
+      font-family: 'Oswald', sans-serif;
+      font-size: 60px;
+      font-weight: 700;
+      color: var(--flame);
+      line-height: 1;
+    }
+    .addon-amount sup {
+      font-size: 26px;
+      vertical-align: super;
+      line-height: 0;
+    }
+    .addon-from {
+      color: var(--flame);
+      margin-bottom: 24px;
+    }
+    .addon-from span { font-weight: 700; }
+
+    .addon-btn {
+      width: 100%;
+      text-align: center;
+      background: var(--flame);
+      border-color: var(--flame);
+      color: #111;
+    }
+    .addon-btn:hover {
+      background: #ffa44a;
+      border-color: #ffa44a;
     }
 
     /* ── FAQ ──────────────────────────────────────────── */
@@ -1146,7 +1391,7 @@
       <img src="brand_assests/Artboard_1.png" alt="Grime to Prime BBQ Cleaning" />
     </div>
     <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
+      <li><a href="#pricing">Services</a></li>
       <li><a href="#results">Results</a></li>
       <li><a href="#area">Service Area</a></li>
       <li><a href="#pricing">Pricing</a></li>
@@ -1442,7 +1687,10 @@
       <div class="section-eyebrow">Transparent, no-surprise pricing</div>
       <div class="section-title">Our Grill Cleaning <span class="accent">Packages</span></div>
       <div class="divider"></div>
-      <div class="pricing-grid">
+      <div class="pricing-rail-wrap">
+      <button class="pricing-rail-arrow left" id="railPrev" type="button" aria-label="Previous package" disabled>‹</button>
+      <button class="pricing-rail-arrow right" id="railNext" type="button" aria-label="Next package">›</button>
+      <div class="pricing-rail" id="pricingRail">
 
         <div class="price-card">
           <div class="price-name">Standard Gas Grill</div>
@@ -1496,23 +1744,11 @@
           <a href="booking.html" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
         </div>
 
-        <div class="price-card" style="border-top: 3px solid var(--flame);">
-          <div class="price-name" style="color:var(--flame);">Kamado / Big Green Egg</div>
+        <div class="price-card">
+          <div class="price-name">Kamado / Big Green Egg</div>
           <div class="price-sub">Big Green Egg, Kamado Joe, ceramic &amp; charcoal cookers</div>
-          <div style="display:flex; gap:16px; align-items:flex-end; margin-bottom:4px; flex-wrap:wrap;">
-            <div>
-              <div class="price-amount"><sup>$</sup>120</div>
-              <div class="price-from">Standalone</div>
-            </div>
-            <div style="padding-bottom:28px; color:var(--muted); font-size:13px; line-height:1.4;">— or —</div>
-            <div>
-              <div class="price-amount" style="color:var(--flame);"><sup style="font-size:20px;">$</sup>80</div>
-              <div class="price-from" style="color:var(--flame);">Bundle Add-on</div>
-            </div>
-          </div>
-          <div style="background:#1a1a1a; border:1px solid #2a2a2a; border-radius:4px; padding:12px 14px; margin-bottom:24px; font-size:13px; color:var(--muted); line-height:1.6;">
-            <strong style="color:var(--flame);">Bundle deal:</strong> Book any BBQ package + add a kamado clean for just <strong style="color:var(--cream);">$80</strong> — save $40.
-          </div>
+          <div class="price-amount"><sup>$</sup>120</div>
+          <div class="price-from">Flat Rate</div>
           <div class="price-divider"></div>
           <ul class="price-includes">
             <li>Ceramic / deflector stone cleaning</li>
@@ -1521,11 +1757,56 @@
             <li>Temperature calibration check</li>
             <li>Post-clean seasoning</li>
           </ul>
-          <a href="booking.html" class="btn-red" style="width:100%; text-align:center; background:var(--flame); border-color:var(--flame); color:#111;">Book + Bundle</a>
+          <a href="booking.html" class="btn-red" style="width:100%; text-align:center;">Book This Package</a>
+        </div>
+
+        <div class="price-card addon-card" id="addonCard">
+          <div class="price-tag addon-tag">+ 2nd Grill Add-On</div>
+          <div class="price-name addon-name">Got Another Grill?</div>
+          <div class="price-sub">Save $40 on any second grill cleaned the same visit. Pick its size:</div>
+
+          <div class="addon-pills" role="tablist" aria-label="Second grill size">
+            <button type="button" class="addon-pill" role="tab" aria-selected="false" data-price="80" data-was="120" data-label="Small / Kamado">
+              <span class="pill-size">Small</span>
+              <span class="pill-price">$80</span>
+            </button>
+            <button type="button" class="addon-pill is-active" role="tab" aria-selected="true" data-price="120" data-was="160" data-label="Standard Gas">
+              <span class="pill-size">Standard</span>
+              <span class="pill-price">$120</span>
+            </button>
+            <button type="button" class="addon-pill" role="tab" aria-selected="false" data-price="160" data-was="200" data-label="Large Gas">
+              <span class="pill-size">Large</span>
+              <span class="pill-price">$160</span>
+            </button>
+          </div>
+
+          <div class="addon-price-row">
+            <div class="addon-was">
+              <span class="addon-was-label">Was</span>
+              <span class="addon-was-amount" id="addonWas">$160</span>
+            </div>
+            <div class="addon-amount">
+              <sup>$</sup><span id="addonNow">120</span>
+            </div>
+          </div>
+          <div class="price-from addon-from"><span id="addonLabel">Standard Gas</span> · 2nd grill price</div>
+
+          <div class="price-divider"></div>
+          <ul class="price-includes">
+            <li>Same full deep clean as a solo booking</li>
+            <li>Same-visit service — no extra trip fee</li>
+            <li>Mix &amp; match — gas, kamado, or smoker</li>
+            <li>Save <strong style="color:var(--flame);">$40</strong> off the standalone rate</li>
+          </ul>
+          <a href="booking.html" class="btn-red addon-btn">Add to Booking</a>
         </div>
 
       </div>
-      <p style="text-align:center; font-size:13px; color:#555; margin-top:28px;">Final price confirmed on-site. Have both a gas grill and a kamado? Ask about our bundle discount.</p>
+      <div class="pricing-rail-fade left"></div>
+      <div class="pricing-rail-fade right"></div>
+      </div>
+      <div class="pricing-rail-hint"><span>Scroll or use arrows</span><span class="arrow">→</span></div>
+      <p style="text-align:center; font-size:13px; color:#555; margin-top:20px;">Final price confirmed on-site. Got more than one grill? Book any package, then add a 2nd grill from $80 — gas, kamado, or smoker.</p>
     </div>
   </section>
 
@@ -1683,6 +1964,117 @@
         answer.classList.add('open');
       }
     }
+
+    (function initAddonPills() {
+      const card = document.getElementById('addonCard');
+      if (!card) return;
+      const pills = card.querySelectorAll('.addon-pill');
+      const now = document.getElementById('addonNow');
+      const was = document.getElementById('addonWas');
+      const label = document.getElementById('addonLabel');
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          pills.forEach(p => {
+            p.classList.remove('is-active');
+            p.setAttribute('aria-selected', 'false');
+          });
+          pill.classList.add('is-active');
+          pill.setAttribute('aria-selected', 'true');
+          now.textContent = pill.dataset.price;
+          was.textContent = '$' + pill.dataset.was;
+          label.textContent = pill.dataset.label;
+        });
+      });
+    })();
+
+    (function initPricingRail() {
+      const rail = document.getElementById('pricingRail');
+      const prev = document.getElementById('railPrev');
+      const next = document.getElementById('railNext');
+      const wrap = rail ? rail.closest('.pricing-rail-wrap') : null;
+      if (!rail || !prev || !next || !wrap) return;
+
+      function step() {
+        const card = rail.querySelector('.price-card');
+        if (!card) return 320;
+        const gap = parseInt(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap || 24, 10) || 24;
+        return card.getBoundingClientRect().width + gap;
+      }
+      const EDGE_PX = 4;
+      function update() {
+        const max = rail.scrollWidth - rail.clientWidth;
+        const atStart = rail.scrollLeft <= EDGE_PX;
+        const atEnd = rail.scrollLeft >= max - EDGE_PX;
+        prev.toggleAttribute('disabled', atStart);
+        next.toggleAttribute('disabled', atEnd);
+        wrap.classList.toggle('has-prev', !atStart);
+        wrap.classList.toggle('has-next', !atEnd);
+      }
+
+      let targetX = rail.scrollLeft;
+      let rafId = null;
+      const EASE = 0.18;
+
+      function tick() {
+        const cur = rail.scrollLeft;
+        const diff = targetX - cur;
+        if (Math.abs(diff) < 0.6) {
+          rail.scrollLeft = targetX;
+          rafId = null;
+          update();
+          return;
+        }
+        rail.scrollLeft = cur + diff * EASE;
+        rafId = requestAnimationFrame(tick);
+      }
+      function ensureAnim() {
+        if (rafId == null) rafId = requestAnimationFrame(tick);
+      }
+      function clampTarget() {
+        const max = rail.scrollWidth - rail.clientWidth;
+        targetX = Math.max(0, Math.min(max, targetX));
+      }
+      function nudge(direction) {
+        const max = rail.scrollWidth - rail.clientWidth;
+        targetX = Math.max(0, Math.min(max, targetX + direction * step()));
+        ensureAnim();
+      }
+
+      prev.addEventListener('click', () => nudge(-1));
+      next.addEventListener('click', () => nudge(1));
+
+      // Wheel / trackpad: convert to smooth horizontal animated scroll
+      rail.addEventListener('wheel', (e) => {
+        const dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        if (dx === 0) return;
+        const max = rail.scrollWidth - rail.clientWidth;
+        const before = targetX;
+        targetX = Math.max(0, Math.min(max, targetX + dx));
+        if (targetX === before) return; // at edge — let page scroll
+        e.preventDefault();
+        ensureAnim();
+      }, { passive: false });
+
+      // User grabs the scrollbar / touches the rail: cancel any running
+      // animation so we don't fight the drag.
+      function abortAnim() {
+        if (rafId != null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        targetX = rail.scrollLeft;
+      }
+      rail.addEventListener('pointerdown', abortAnim);
+      rail.addEventListener('touchstart', abortAnim, { passive: true });
+
+      // Keep target in sync when user drags scrollbar / touches
+      rail.addEventListener('scroll', () => {
+        if (rafId == null) targetX = rail.scrollLeft;
+        update();
+      }, { passive: true });
+      window.addEventListener('resize', () => { clampTarget(); update(); });
+      update();
+    })();
 
     // Floating newsletter removed — the Grime Bot quote widget (widget.js) replaces it.
 
