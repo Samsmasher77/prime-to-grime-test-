@@ -151,7 +151,7 @@ async function runSubmitQuote(input, photo) {
       submitted_at: new Date().toISOString(),
       error: sheetResult.error,
       message:
-        'The lead-logging system is temporarily unavailable. Tell the customer we hit a glitch on our end and ask them to call or text (760) 505-4269 directly — do NOT claim the quote was sent.',
+        'The lead-logging system is temporarily unavailable. Tell the customer we hit a glitch on our end and ask them to call or text (619) 694-7518 directly — do NOT claim the quote was sent.',
     };
   }
 
