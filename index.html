@@ -325,9 +325,13 @@
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.25s, visibility 0.25s;
-      z-index: 199;
+      z-index: 200;
     }
     .mobile-menu-backdrop.open { opacity: 1; visibility: visible; }
+    /* When the mobile menu is open, lift the whole nav above the backdrop
+       so the menu (which lives inside the nav's stacking context) is
+       both visually bright and pointer-event-reachable. */
+    body.menu-open .site-nav { z-index: 201; }
     .nav-links li.has-dropdown { position: relative; }
     .nav-links li.has-dropdown > a { cursor: default; }
     .nav-links .dropdown-toggle::after {
@@ -2408,6 +2412,7 @@
         btn.classList.toggle('open', open);
         menu.classList.toggle('open', open);
         backdrop.classList.toggle('open', open);
+        document.body.classList.toggle('menu-open', open);
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
         btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
         document.body.style.overflow = open ? 'hidden' : '';
